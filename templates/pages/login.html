@@ -1,0 +1,37 @@
+{% extends "page-wrapper.html"%}
+
+{% block body %}
+<div class="home-wrapper" style="margin-top: calc(50px + 20vh);">
+    <div class="container">
+        <div class="col-md-6 col-md-offset-3">
+            <h2>Login to UniVerse</h2>
+            <hr>
+            <form class="login-form" action="" method="POST">
+                <label for="loginEmail">Email Address</label>
+                <input name="login-email"
+                       type="email" 
+                       class="form-control" 
+                       id="loginEmail" 
+                       placeholder="you@example.com"
+                       value="{{ request.form.username }}">
+
+                <label for="loginPassword">Password</label>
+                <input name="login-password"
+                       type="password" 
+                       class="form-control" 
+                       id="loginPassword" 
+                       placeholder="********"
+                       value="{{ request.form.password }}">
+                <input type="submit" 
+                       class="btn btn-info"
+                       value="Login">
+            </form>
+            <p>{{ error }}</p>
+            <hr>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock%}

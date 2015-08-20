@@ -1,0 +1,29 @@
+{% extends "page-wrapper.html"%}
+
+{% block body %}
+<div class="home-wrapper" style="margin-top: calc(50px + 20vh);">
+    <div class="container">
+        <div class="col-md-6 col-md-offset-3">
+            <h2>Register</h2>
+            <hr>
+            {% from "_formhelpers.html" import render_field %}
+            <form class="login-form" action="/register/" method="post">
+                <dl>
+                    {{ render_field(form.username)}}
+                    {{ render_field(form.email)}}
+                    {{ render_field(form.password)}}
+                    {{ render_field(form.confirm)}}
+                    {{ render_field(form.accept_tos)}}
+                </dl>
+                <p><input type="submit" value="Register"></p>
+                
+            </form>
+            {% if error %}
+            <p class="error">ERROR: {{ error }}</p>
+            {% endif %}
+            <hr>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
