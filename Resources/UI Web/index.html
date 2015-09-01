@@ -1,0 +1,66 @@
+---
+layout: default
+title: Account Settings
+user: true
+---
+
+
+
+<div class="container" style="margin-top: 100px; @media(max-width:560) min-height: calc(100vh - 235px);">
+    <div class="row edit-settings-page">
+        <form action="" method="post">
+        <div class="col-lg">
+            <div class="edit-settings">
+                <h1>Account Settings</h1>
+                <h2><span class="sub">Username</span></h2>
+                <input name="username"
+                   id="username"
+                   type="text"
+                   class="icon-ellipsis"
+                   placeholder="Username">
+                <h2><span class="sub">Email</span></h2>
+                <input name="email"
+                   id="email"
+                   type="email"
+                   class="icon-at"
+                   placeholder="you@example.com">
+                <h2><span class="sub">Change Password</span></h2>
+                <input name="password"
+                       id="signup-password"
+                       type="password"
+                       class="icon-ellipsis"
+                       placeholder="Password">
+                <h2><span class="sub">Repeat New Password</span></h2>
+                <input name="repeat-password"
+                       id="signup-repeat-password"
+                       type="password"
+                       class="icon-ellipsis"
+                       placeholder="Repeat Password">
+                <p>NOTE: leave password fields blank if you do not want to change your password.</p>
+                </div>
+            </div>
+            
+        <div class="col-sm">
+            <div class="artist-meta">
+                <div class="album-meta">
+                    <div class="fix-bottom">
+                        <input name="save-album"
+                           id="save-album"
+                           type="submit"
+                           class=""
+                           value="Save">
+                    </div>
+                    <h2><span class="sub">Image</span></h2>
+                    <img class="artwork" 
+                     src="assets/content/art-imaginaerum.jpg">
+                    <input name="user-image"
+                           id="user-image"
+                           type="file"
+                           class=""
+                           value="Choose Image">
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>

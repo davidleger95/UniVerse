@@ -1,0 +1,151 @@
+input[type="text"],
+input[type="email"], 
+input[type="password"], 
+input[type="search"],
+input[type="number"],
+textarea{
+    margin: 10px 0;
+    width: calc(100% - 40px);
+    border-radius: 20px;
+    height: 30px;
+    
+    padding-left: 40px;
+    padding-right: -40px;
+    border: 1px solid $primary;
+    color: $primary;
+    font-style: italic;
+    font-size: 14px;
+    
+    &:focus{
+        outline: none;
+        box-shadow: 0px 0px 4px rgba($dark, 0.5);
+    }
+    
+    
+    background-position: 0px 0px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    
+    &.icon-1{
+        background-image: url(/static/img/icons/1.svg);
+    }
+    &.icon-2{
+        background-image: url(/static/img/icons/2.svg);
+    }
+    &.icon-3{
+        background-image: url(/static/img/icons/3.svg);
+    }
+    &.icon-4{
+        background-image: url(/static/img/icons/4.svg);
+    }
+    &.icon-5{
+        background-image: url(/static/img/icons/5.svg);
+    }
+    &.icon-6{
+        background-image: url(/static/img/icons/6.svg);
+    }
+    &.icon-7{
+        background-image: url(/static/img/icons/7.svg);
+    }
+    &.icon-8{
+        background-image: url(/static/img/icons/8.svg);
+    }
+    &.icon-9{
+        background-image: url(/static/img/icons/9.svg);
+    }
+    &.icon-hash{
+        background-image: url(/static/img/icons/hash.svg);
+    }
+    
+    &.icon-treble{
+        background-image: url(/static/img/icons/treble.svg);
+    }
+    &.icon-quarter{
+        background-image: url(/static/img/icons/quarter.svg);
+    }
+    &.icon-eighth{
+        background-image: url(/static/img/icons/eighth.svg);
+    }
+    &.icon-sharp{
+        background-image: url(/static/img/icons/sharp.svg);
+    }
+    &.icon-flat{
+        background-image: url(/static/img/icons/flat.svg);
+    }
+    
+    &.icon-record{
+        background-image: url(/static/img/icons/record.svg);
+    }
+    &.icon-ellipsis{
+        background-image: url(/static/img/icons/ellipsis.svg);
+    }
+    &.icon-search{
+        background-image: url(/static/img/icons/search.svg);
+    }
+    &.icon-at{
+        background-image: url(/static/img/icons/at.svg);
+    }
+    &.icon-plus{
+        background-image: url(/static/img/icons/plus.svg);
+    }
+    &.icon-no{
+        background-image: url(/static/img/icons/no.svg);
+    }
+}
+
+textarea{
+    padding: 10px;
+    
+    min-height: 200px;
+    max-width: calc(100% - 20px);;
+    width: 100%;
+}
+
+input[type="submit"],
+input[type="button"],
+input[type="file"],
+.btn{
+    display: block;
+    margin: 10px 0;
+    width: 100%;
+    border-radius: 30px;
+    //height: 35px;
+    text-align: center;
+    padding: 10px 0;
+    //box-shadow: 0px 0px 4px $dark inset;
+    border: 0px solid $primary;
+    color: $light;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 14px;
+    &:active{
+        outline: none;
+        box-shadow: 0px 0px 4px $dark inset;
+    }
+    &:hover{
+        text-decoration: none;
+    }
+    
+    background: $primary;
+    
+    &.outline{
+        background: none;
+        color: $primary;
+        border: 1px solid $primary;
+    }
+    
+}
+
+@media(max-width: 580px){
+    &.fix-bottom{
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 0 10px;
+        background: white;
+        box-shadow: 0px 0px 5px $accent;
+
+    }
+}

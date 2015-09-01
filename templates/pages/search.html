@@ -1,0 +1,38 @@
+{% extends "page-wrapper.html"%}
+
+{% block body %}
+<div class="container" style="">
+    <div class="row">
+        <h1>Search Results For: <span class="sub">"{{ search }}"</span></h1>
+        
+        <h3>Songs</h3>
+        <ul>
+            {% for song in songs %}
+            <li>
+                <h2><a href="/song/?song={{ song['id'] }}">{{ song['title'] }}</a></h2>
+            </li>
+            {% endfor %}
+        </ul>
+        
+        <h3>Albums</h3>
+        <ul>
+            {% for album in albums %}
+            <li>
+                <h2><a href="/artist/?artist={{ album['artist_id'] }}#album{{ album['id'] }}">{{ album['title'] }}</a></h2>
+            </li>
+            {% endfor %}
+        </ul>
+        
+        <h3>Artists</h3>
+        <ul>
+            {% for artist in artists %}
+            <li>
+                <h2><a href="/artist/?artist={{ artist['id'] }}">{{ artist['name'] }}</a></h2>
+            </li>
+            {% endfor %}
+        </ul>
+        
+    </div>
+</div>
+
+{% endblock %}

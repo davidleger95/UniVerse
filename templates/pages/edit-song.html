@@ -1,0 +1,81 @@
+{% extends "page-wrapper.html"%}
+
+{% block body %}
+
+<div class="container" style="">
+    <div class="row edit-song-page">
+        <form action="" method="post">
+        <div class="col-lg">
+            <div class="edit-song">
+                <h1>Add/Edit Song</h1>
+                <h2><span class="sub">Title</span></h2>
+                <input name="title"
+                       id="song-title"
+                       type="text"
+                       class="icon-ellipsis"
+                       placeholder="Song Title"
+                       value="{{ song['title'] }}">
+                <h2><span class="sub">Media Link</span></h2>
+                <input name="media_link"
+                       id="music-video"
+                       type="text"
+                       class="icon-ellipsis"
+                       placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                       value="{{ song['media_link'] }}">
+                <h2><span class="sub">Lyrics</span></h2>
+                <textarea name="lyrics"
+                          id="lyrics"
+                          type="text"
+                          class=""
+                          placeholder="It was many and many a year ago, in a kingdom by the sea . . .">{{ song['lyrics'] }}</textarea>
+                
+                </div>
+            </div>
+            
+        <div class="col-sm">
+            <div class="song-meta">
+                <div class="album-meta">
+                    <div class="fix-bottom">
+                        <input name="save-song"
+                           id="save-song"
+                           type="submit"
+                           class=""
+                           value="Save">
+                    </div>
+                    <h2 class=""><span class="sub">Artist</span></h2>
+                    <p>Artist Name</p>
+                    <h2 class=""><span class="sub">Album</span></h2>
+                    <p>Album Title</p>
+                    <h2><span class="sub">Track Number</span></h2>
+                    <input name="track_number"
+                           id="track-number"
+                           type="number"
+                           class="icon-no"
+                           placeholder="#"
+                           value="{{ song['track_number'] }}">
+                    <h2><span class="sub">Composers</span></h2>
+                    <ul>
+                        <li>
+                            <input name="composer-1"
+                                   id="composer-1"
+                                   type="text"
+                                   class="icon-1"
+                                   placeholder="Composer"
+                                   value="Composer Name">
+                        </li>
+                        <li>
+                            <input name="new-composer"
+                                   id="new-composer"
+                                   type="text"
+                                   class="icon-plus"
+                                   placeholder="Add a Composer...">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

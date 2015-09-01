@@ -1,0 +1,70 @@
+{% extends "page-wrapper.html"%}
+
+{% block body %}
+
+
+<div class="container" style="">
+    <div class="row edit-album-page">
+        <form action="" method="post" enctype="multipart/form-data">
+        <div class="col-lg">
+            <div class="edit-album">
+                <h1>Add/Edit Album</h1>
+                <h2><span class="sub">Title</span></h2>
+                <input name="title"
+                       id="album-title"
+                       type="text"
+                       class="icon-ellipsis"
+                       placeholder="Album Title"
+                       value="{{ album['title'] }}">
+                <h2><span class="sub">Year Released</span></h2>
+                <input name="year"
+                       id="album-year"
+                       type="number"
+                       class="icon-ellipsis"
+                       placeholder="When Did This Album Come Out?"
+                       value="{{ album['year'] }}">
+                <h2><span class="sub">Genre</span></h2>
+                <input name="genre"
+                       id="album-genre"
+                       type="text"
+                       class="icon-eighth"
+                       placeholder="Album Genre"
+                       value="{{ album['genre'] }}">
+                <input name="add-song"
+                       id="add-song"
+                       type="button"
+                       class="outline"
+                       value="Add A Song">
+                </div>
+            </div>
+            
+        <div class="col-sm">
+            <div class="artist-meta">
+                <div class="album-meta">
+                    <div class="fix-bottom">
+                        <input name="save-album"
+                               id="save-album"
+                               type="submit"
+                               class=""
+                               value="Save">
+                    </div>
+                    <h2 class=""><span class="sub">Artist</span></h2>
+                    <p>{{ artist['name'] }}</p>
+                    
+                    <h2><span class="sub">Artwork</span></h2>
+                    <img id="album-artwork-preview"
+                         class="artwork" 
+                         src="/static/uploads/{{ album['artwork'] }}">
+                    <input name="artwork"
+                           id="album-artwork"
+                           type="file"
+                           class="outline"
+                           value="Choose Art">
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

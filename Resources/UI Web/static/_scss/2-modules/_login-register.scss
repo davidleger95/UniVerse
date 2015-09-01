@@ -1,0 +1,23 @@
+.login-register{
+    position: relative;
+    overflow: auto;
+    .logo{
+        position: relative;
+        display: block;
+        padding: 0% 10%;
+        margin: 20% 0;
+        vertical-align: middle;
+        height: 100%;
+        img{
+            width: 100%;
+            margin: 20% 0;
+        }
+    }
+    .lr-form{
+        position: relative;
+        display: block;
+        padding: 0% 10%;
+        margin: 20% 0;
+        height: 100%;
+    }
+}

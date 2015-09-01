@@ -1,0 +1,57 @@
+// --------------------------------------------------
+//  Headings
+// --------------------------------------------------
+
+h1, h2, h3, h4, h5, h6{
+    text-transform: uppercase;
+    color: $dark;
+    margin: 0.5em 0;
+    line-height: 1em;
+    
+    // Subtitles
+    .sub{
+        color: $accent;
+        font-size: 0.75em;
+    }
+    
+    // Alternate Color
+    &.alt{
+        color: $primary;
+    }
+    
+}
+
+// --------------------------------------------------
+//  Body
+// --------------------------------------------------
+
+p{
+    line-height: 1.2em;
+    //padding-left: 1.5em;
+    //text-indent: -1.5em;
+}
+a{
+    color: $primary;
+    text-decoration: none;
+    &:hover{
+        text-decoration: underline;
+    }
+}
+
+
+
+// --------------------------------------------------
+//  Text Alignment
+// --------------------------------------------------
+
+.text-left{
+    text-align: left;
+}
+
+.text-center{
+    text-align: center;
+}
+
+.text-right{
+    text-align: right;
+}

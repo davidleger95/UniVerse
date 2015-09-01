@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="140px" height="140px" viewBox="0 0 140 140" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3 (11970) - http://www.bohemiancoding.com/sketch -->
+    <title>Oval 5 + Oval 5 Copy 2 + Oval 9 + Line</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="UniVerse" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Icons" sketch:type="MSArtboardGroup" transform="translate(-352.000000, -73.000000)">
+            <g id="Oval-5-+-Oval-5-Copy-2-+-Oval-9-+-Line" sketch:type="MSLayerGroup" transform="translate(352.000000, 73.000000)">
+                <g id="Oval-5-+-Oval-5-Copy-2" sketch:type="MSShapeGroup">
+                    <circle id="Oval-5" fill="#CEBD0F" cx="70" cy="70" r="70"></circle>
+                    <circle id="Oval-5-Copy" stroke="#FFFFFF" stroke-width="4" cx="70" cy="70" r="60"></circle>
+                </g>
+                <g id="Oval-9-+-Line" transform="translate(42.000000, 37.538462)" stroke="#FFFFFF" sketch:type="MSShapeGroup">
+                    <ellipse id="Oval-9" stroke-width="4" cx="37.9411765" cy="22.0588235" rx="22.0588235" ry="22.0588235"></ellipse>
+                    <path d="M17.4461482,42.5538518 L0,60" id="Line" stroke-width="5" stroke-linecap="round"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

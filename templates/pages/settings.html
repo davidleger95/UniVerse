@@ -1,0 +1,66 @@
+{% extends "page-wrapper.html"%}
+
+{% block body %}
+<div class="container" style="">
+    <div class="row edit-settings-page">
+        <form action="" method="post" enctype="multipart/form-data">
+        <div class="col-lg">
+            <div class="edit-settings">
+                <h1>Account Settings</h1>
+                <h2><span class="sub">Username</span></h2>
+                <input name="username"
+                       id="username"
+                       type="text"
+                       class="icon-ellipsis"
+                       placeholder="Username"
+                       value="{{ session['username'] }}">
+                <h2><span class="sub">Email</span></h2>
+                <input name="email"
+                       id="email"
+                       type="email"
+                       class="icon-at"
+                       placeholder="you@example.com"
+                       value="{{ session['user_email'] }}">
+                <h2><span class="sub">Change Password</span></h2>
+                <input name="password"
+                       id="signup-password"
+                       type="password"
+                       class="icon-ellipsis"
+                       placeholder="Password">
+                <h2><span class="sub">Repeat New Password</span></h2>
+                <input name="repeatpassword"
+                       id="signup-repeat-password"
+                       type="password"
+                       class="icon-ellipsis"
+                       placeholder="Repeat Password">
+                <p>NOTE: leave password fields blank if you do not want to change your password.</p>
+                </div>
+            </div>
+            
+        <div class="col-sm">
+            <div class="artist-meta">
+                <div class="album-meta">
+                    <div class="fix-bottom">
+                        <input name="save-album"
+                           id="save-album"
+                           type="submit"
+                           class=""
+                           value="Save">
+                    </div>
+                    <h2><span class="sub">Image</span></h2>
+                    <img id="user-image-preview"
+                         class="artwork" 
+                         src="/static/uploads/{{ session['user_image'] }}">
+                    <input name="image"
+                           id="user-image"
+                           type="file"
+                           class="outline"
+                           value="Choose Image">
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

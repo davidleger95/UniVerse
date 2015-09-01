@@ -1,38 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <!-- Required meta tags always come first -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <link xmlns="http://www.w3.org/1999/xhtml" rel="shortcut icon" type="image/png" href="/assets/img/badge-sm.png"/>
+    <title>UniVerse | {{ title }}</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/main.css') }}">
   </head>
   <body>
-    <nav class="navbar navbar-fixed-top navbar-light" style="background-color: #e3f2fd;">
-        <div class="container">  
-          <a class="navbar-brand" href="#">UniVerse</a>
-          <ul class="nav navbar-nav">
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Features</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Pricing</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">About</a>
-            </li>
-          </ul>
-          <form class="form-inline navbar-form pull-right">
-            <input class="form-control" type="text" placeholder="Search">
-            <button class="btn btn-success-outline" type="submit">Search</button>
-          </form>
-        </div>
-    </nav>
+      {% include "components/navbar.html" %}
     <div class="view-wrapper" style="margin-top: 60px;">
         
         {% with messages = get_flashed_messages() %}
@@ -49,8 +28,8 @@
         {% endwith %}
         {% block body %}{% endblock %}
       </div>
-    <!-- jQuery first, then Bootstrap JS. -->
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+      {% include "components/footer.html" %}
+  <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+  <script src="{{ url_for('static',filename='js/ui.js') }}"></script>
   </body>
 </html>

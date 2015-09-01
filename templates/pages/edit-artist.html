@@ -1,0 +1,92 @@
+{% extends "page-wrapper.html"%}
+
+{% block body %}
+
+<div class="container" style="">
+    <div class="row edit-artist-page">
+        <form action="" method="post">
+        <div class="col-lg">
+            <div class="edit-artist">
+                <h1>Add/Edit Artist</h1>
+                <h2><span class="sub">Name</span></h2>
+                <input name="name"
+                       id="artist-name"
+                       type="text"
+                       class="icon-ellipsis"
+                       placeholder="Artist"
+                       value="{{ artist['name'] }}">
+                <h2><span class="sub">Biography</span></h2>
+                <textarea name="bio"
+                          id="artist-bio"
+                          type="text"
+                          class=""
+                          placeholder="About this Artist"
+                          >{{ artist['bio'] | safe }}</textarea>
+                <a href="edit-album.html"
+                       id="add-album"
+                       class="btn outline">Add An Album</a>
+                </div>
+            </div>
+            
+        <div class="col-sm">
+            <div class="artist-meta">
+                <div class="album-meta">
+                    <div class="fix-bottom">
+                        <input name="save-artist"
+                               id="save-artist"
+                               type="submit"
+                               class=""
+                               value="Save">
+                    </div>
+                    <h2><span class="sub">Members</span></h2>
+                    <ul>
+                        {% for member in members %}
+                        <li>
+                            <input name="artist-member-{{ member['id'] }}"
+                                   id="artist-member-{{ member['id'] }}"
+                                   type="text"
+                                   class="icon-{{ loop.index }}"
+                                   placeholder="Member"
+                                   value="{{ member['name'] }}">
+                            
+                        </li>
+                        {% endfor %}
+                        <li>
+                            <input name="new-member"
+                                   id="new-member"
+                                   type="text"
+                                   class="icon-plus"
+                                   placeholder="Add New Member...">
+                        </li>
+                    </ul>
+                    
+                    
+                    <h2><span class="sub">Genre</span></h2>
+                    <input name="genre"
+                           id="artist-genre"
+                           type="text"
+                           class="icon-eighth"
+                           placeholder="Genre"
+                           value="{{ artist['genre'] }}">
+                    <h2><span class="sub">Country</span></h2>
+                    <input name="country"
+                           id="artist-country"
+                           type="text"
+                           class="icon-ellipsis"
+                           placeholder="Where is This Artist From?"
+                           value="{{ artist['country'] }}">
+                    <h2><span class="sub">Year Formed</span></h2>
+                    <input name="year"
+                           id="artist-year"
+                           type="number"
+                           class="icon-ellipsis"
+                           placeholder="2015"
+                           value="{{ artist['year'] }}">
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

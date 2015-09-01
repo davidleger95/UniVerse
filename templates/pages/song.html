@@ -1,0 +1,69 @@
+{% extends "page-wrapper.html"%}
+
+{% block body %}
+
+<div class="container" style="">
+    <div class="row song-page">
+        <div class="col-lg">
+            <div class="song">
+                <h1>{{ song['title'] }}</h1>
+                {% if song['media_link'] %}
+                <iframe src="https://www.youtube.com/embed/{{ song['media_link'] }}?rel=0&amp;showinfo=0"
+                        width="100%" 
+                        height="300px"  
+                        frameborder="0" 
+                        allowfullscreen></iframe>
+                {% endif %}
+                <!--iframe width="100%" 
+                        height="166" 
+                        scrolling="no" 
+                        frameborder="no" 
+                        src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/41237656&amp;color=cebd0f&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false"></iframe-->
+                <!--audio controls>
+                    <source src="assets/content/song-storytime.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio-->
+                <p>
+                    {{ song['lyrics'] | safe }}
+                </p>
+                <a href="/edit-song/?song={{ song['id'] }}">Edit</a>
+                </div>
+            </div>
+        <span class="divider hide-mobile"></span>
+        <div class="col-sm">
+            <div class="album">
+                <img class="artwork" 
+                     src="/static/uploads/{{ album['artwork'] }}">
+                <div class="album-meta">
+                    <h3 class="title"><a href="/artist/?artist={{ artist['id'] }}#album{{ album['id'] }}">{{ album['title'] }}</a> <br/> <span class="sub"><a href="/artist/?artist={{ artist['id'] }}">{{ artist['name'] }}</a></span></h3>
+                    {% if album['year'] %}
+                    <h5>Year</h5>
+                    <p>{{ album['year'] }}</p>
+                    {% endif %}
+                    
+                    {% if album['genre'] %}
+                    <h5>Genre</h5>
+                    <p>{{ album['genre'] }}</p>
+                    {% endif %}
+                    <a href="/edit-album/?album={{ album['id'] }}&artist={{ artist['id'] }}">Edit</a>
+                
+                </div>
+                <div class="tracklist">
+                    <h4>Tracklist</h4>
+                    <ol>
+                        {% for track in album['tracklist']['tracks'] %}
+                        {% if song['id'] == track['id'] %}
+                        <li class="track active"><a href="#">{{ track['title'] }}</a></li>
+                        {% else %}
+                        <li class="track"><a href="?song={{ track['id'] }}">{{ track['title'] }}</a></li>
+                        {% endif %}
+                        {% endfor %}
+                        <a href="/add-song/?album={{ album['id'] }}" class="btn outline">Add Song To Album</a>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

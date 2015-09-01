@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="140px" height="140px" viewBox="0 0 140 140" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3 (11970) - http://www.bohemiancoding.com/sketch -->
+    <title>Oval 5 + Oval 5 Copy 3 + @ Copy</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="UniVerse" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Icons" sketch:type="MSArtboardGroup" transform="translate(-612.000000, -263.000000)">
+            <g id="Oval-5-+-Oval-5-Copy-3-+-@-Copy" sketch:type="MSLayerGroup" transform="translate(612.000000, 263.000000)">
+                <g id="Oval-5-+-Oval-5-Copy-3" sketch:type="MSShapeGroup">
+                    <path d="M70,140 C108.659932,140 140,108.659932 140,70 C140,31.3400675 108.659932,0 70,0 C31.3400675,0 0,31.3400675 0,70 C0,108.659932 31.3400675,140 70,140 Z M40.5,78 C44.6421356,78 48,74.6421356 48,70.5 C48,66.3578644 44.6421356,63 40.5,63 C36.3578644,63 33,66.3578644 33,70.5 C33,74.6421356 36.3578644,78 40.5,78 Z M70.5,78 C74.6421356,78 78,74.6421356 78,70.5 C78,66.3578644 74.6421356,63 70.5,63 C66.3578644,63 63,66.3578644 63,70.5 C63,74.6421356 66.3578644,78 70.5,78 Z M100.5,78 C104.642136,78 108,74.6421356 108,70.5 C108,66.3578644 104.642136,63 100.5,63 C96.3578644,63 93,66.3578644 93,70.5 C93,74.6421356 96.3578644,78 100.5,78 Z" id="Oval-5" fill="#CEBD0F"></path>
+                    <circle id="Oval-5-Copy" stroke="#FFFFFF" stroke-width="4" cx="70" cy="70" r="60"></circle>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

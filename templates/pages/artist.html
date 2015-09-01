@@ -1,0 +1,112 @@
+{% extends "page-wrapper.html"%}
+
+{% block body %}
+
+<div class="container" style="">
+    <div class="row artist-page">
+        <div class="col-lg">
+            <div class="artist">
+                <h1>{{ artist['name'] }}</h1>
+                
+                <p>
+                    {{ artist['bio'] | safe }}
+                </p>
+                <a href="/edit-artist/?artist={{ artist['id'] }}">Edit</a>
+                
+                <a href="/add-album/?artist={{ artist['id'] }}">Add Album</a>
+                </div>
+        </div> 
+        
+        <span class="divider hide-mobile"></span>
+        <div class="col-sm">
+            <div class="artist-meta">
+                    
+                    <h5 class="label">Members</h5>
+                    {% if members %}
+                    <ul class="artist-members">
+                        {% for member in members %}
+                        <li class="member">
+                            {{ member['name'] }}
+                            {% if member['role'] %}
+                                ({{ member['role'] }})
+                            {% endif %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p>--</p>
+                    {% endif %}
+                    
+                    
+                    <h5 class="label">Genre</h5>
+                    {% if artist['genre'] %}
+                    <p>{{ artist['genre'] }}</p>
+                    {% else %}
+                    <p>--</p>
+                    {% endif %}
+                    
+                    <h5 class="label">Country</h5>
+                    {% if artist['country'] %}
+                    <p>{{ artist['country'] }}</p>
+                    {% else %}
+                    <p>--</p>
+                    {% endif %}
+                    
+                    <h5 class="label">Year Formed</h5>
+                    {% if artist['year'] %}
+                    <p>{{ artist['year'] }}</p>
+                    {% else %}
+                    <p>--</p>
+                    {% endif %}
+                
+                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl">
+            <input type="search"
+                   onkeyup="filter(this)"
+                   name="filter-artist" 
+                   id="artist-filter-bar" 
+                   class="icon-search"
+                   placeholder="Filter Songs/Albums">
+        </div>
+    </div>
+
+    {% for album in albums %}
+    <div class="row flip">
+        <div class="album" id="album{{ album['id'] }}">
+            <div class="col-sm">
+                <img class="artwork" 
+                     src="/static/uploads/{{ album['artwork'] }}">
+                <div class="album-meta">
+                    <h3 class="title">{{ album['title'] }} <br/> <span class="sub">{{ artist['name'] }}</span></h3>
+                    {% if album['year']%}
+                    <h5>Year Released</h5>
+                    <p>{{ album['year'] }}</p>
+                    {% endif %}
+                    
+                    {% if album['genre']%}
+                    <h5>Genre</h5>
+                    <p>{{ album['genre'] }}</p>
+                    {% endif %}
+                    <a href="/edit-album/?album={{ album['id'] }}&artist={{ artist['id'] }}">Edit</a>
+                </div>
+            </div>
+            <div class="col-lg">
+                <div class="tracklist">
+                    <ol>
+                        {% for track in album['tracklist'] %}
+                        <li class="track"><a href="/song/?song={{ track['id'] }}">{{ track['title'] }}</a></li>
+                        {% endfor %}
+                        
+                    </ol>
+                </div>
+                <a href="/add-song/?album={{ album['id'] }}" class="btn outline">Add Song To Album</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
