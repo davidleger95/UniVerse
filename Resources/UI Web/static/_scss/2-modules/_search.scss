@@ -1,0 +1,18 @@
+.search-results{
+    ul{
+        list-style: none;
+        padding: 0;
+        display: block;
+        li{
+            display: block;
+            overflow: auto;
+        }
+        .album-art{
+            float: left;
+            width: 100px;
+            height: 100px;
+            margin-right: 10px;
+            box-shadow: 0 0px 4px $dark;
+        }
+    }
+}

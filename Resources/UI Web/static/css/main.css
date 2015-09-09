@@ -884,27 +884,30 @@ footer {
   box-shadow: 0 2px 5px #363205; }
 
 .album .album-meta h5 {
-  color: #CEBD0F; }
+  color: #CEBD0F !important; }
+  .album .album-meta h5 .sub {
+    color: #BAB9AC !important; }
 
 .album .album-meta p {
   margin-top: 0; }
 
-.album .tracklist ol {
+.album .tracklist ul {
   text-transform: uppercase;
   font-size: 0.8em;
-  padding: 0; }
-  .album .tracklist ol li.track {
+  padding: 0;
+  list-style: none; }
+  .album .tracklist ul li.track {
     color: #BAB9AC;
     border-top: 1px solid #BAB9AC;
     list-style-position: inside; }
-    .album .tracklist ol li.track:hover {
+    .album .tracklist ul li.track:hover {
       color: #F5F4EE; }
-    .album .tracklist ol li.track.active {
+    .album .tracklist ul li.track.active {
       background: #CEBD0F;
       color: #F5F4EE; }
-      .album .tracklist ol li.track.active a {
+      .album .tracklist ul li.track.active a {
         color: #F5F4EE; }
-    .album .tracklist ol li.track a {
+    .album .tracklist ul li.track a {
       display: block;
       height: 10px;
       padding: 10px 5px;
@@ -912,7 +915,7 @@ footer {
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis; }
-      .album .tracklist ol li.track a:hover {
+      .album .tracklist ul li.track a:hover {
         background: #CEBD0F;
         color: #F5F4EE;
         text-decoration: none; }
@@ -928,3 +931,17 @@ footer {
 .artist-page .artist-meta ul li {
   display: block;
   margin-bottom: 3px; }
+
+.search-results ul {
+  list-style: none;
+  padding: 0;
+  display: block; }
+  .search-results ul li {
+    display: block;
+    overflow: auto; }
+  .search-results ul .album-art {
+    float: left;
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+    box-shadow: 0 0px 4px #363205; }

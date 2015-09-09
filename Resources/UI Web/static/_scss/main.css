@@ -995,34 +995,38 @@ footer {
 
 /* line 7, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/2-modules/_album.scss */
 .album .album-meta h5 {
-  color: #CEBD0F; }
+  color: #CEBD0F !important; }
+  /* line 10, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/2-modules/_album.scss */
+  .album .album-meta h5 .sub {
+    color: #BAB9AC !important; }
 
-/* line 10, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/2-modules/_album.scss */
+/* line 14, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/2-modules/_album.scss */
 .album .album-meta p {
   margin-top: 0; }
 
-/* line 16, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/2-modules/_album.scss */
-.album .tracklist ol {
+/* line 20, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/2-modules/_album.scss */
+.album .tracklist ul {
   text-transform: uppercase;
   font-size: 0.8em;
-  padding: 0; }
-  /* line 20, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/2-modules/_album.scss */
-  .album .tracklist ol li.track {
+  padding: 0;
+  list-style: none; }
+  /* line 25, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/2-modules/_album.scss */
+  .album .tracklist ul li.track {
     color: #BAB9AC;
     border-top: 1px solid #BAB9AC;
     list-style-position: inside; }
-    /* line 25, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/2-modules/_album.scss */
-    .album .tracklist ol li.track:hover {
+    /* line 30, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/2-modules/_album.scss */
+    .album .tracklist ul li.track:hover {
       color: #F5F4EE; }
-    /* line 28, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/2-modules/_album.scss */
-    .album .tracklist ol li.track.active {
+    /* line 33, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/2-modules/_album.scss */
+    .album .tracklist ul li.track.active {
       background: #CEBD0F;
       color: #F5F4EE; }
-      /* line 31, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/2-modules/_album.scss */
-      .album .tracklist ol li.track.active a {
+      /* line 36, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/2-modules/_album.scss */
+      .album .tracklist ul li.track.active a {
         color: #F5F4EE; }
-    /* line 35, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/2-modules/_album.scss */
-    .album .tracklist ol li.track a {
+    /* line 40, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/2-modules/_album.scss */
+    .album .tracklist ul li.track a {
       display: block;
       height: 10px;
       padding: 10px 5px;
@@ -1030,8 +1034,8 @@ footer {
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis; }
-      /* line 44, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/2-modules/_album.scss */
-      .album .tracklist ol li.track a:hover {
+      /* line 49, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/2-modules/_album.scss */
+      .album .tracklist ul li.track a:hover {
         background: #CEBD0F;
         color: #F5F4EE;
         text-decoration: none; }

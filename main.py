@@ -60,7 +60,7 @@ def search():
         # Establish connection
         c, conn = connection()
         
-        result = c.execute("SELECT * FROM tracks WHERE (title LIKE (%s) OR lyrics LIKE (%s))", [sanitize(query), sanitize(query)])
+        result = c.execute("SELECT t.track_id, t.title,  FROM tracks t JOIN WHERE (t.title LIKE (%s) OR t.lyrics LIKE (%s))", [sanitize(query), sanitize(query)])
         songResults = c.fetchall()
         
         result = c.execute("SELECT * FROM albums WHERE (title LIKE (%s) OR genre LIKE (%s))", [sanitize(query), sanitize(query)])
@@ -717,7 +717,7 @@ def song():
         album['tracklist'] = {}
         album['tracklist']['tracks'] = []
         for track in data:
-            album['tracklist']['tracks'].append({'title': track[2], 'id': track[0]})
+            album['tracklist']['tracks'].append({'title': track[2], 'track_no': track[1], 'id': track[0]})
             
         # Close Connection
         conn.commit()
@@ -772,11 +772,11 @@ def artist():
         
         albums = []
         for album in data:
-            result = c.execute("SELECT track_id, title FROM tracks WHERE album_id = (%s) ORDER BY track_no;", [album[0]])
+            result = c.execute("SELECT track_id, title, track_no FROM tracks WHERE album_id = (%s) ORDER BY track_no;", [album[0]])
             data2 = c.fetchall()
             tracklist = []
             for track in data2:
-                tracklist.append({'id': track[0], 'title': track[1]})
+                tracklist.append({'id': track[0], 'title': track[1], 'track_no': track[2]})
             albums.append({'id': album[0], 'title': album[2], 'genre': album[3], 'year': album[4], 'artwork': album[5], 'tracklist': tracklist})
         return render_template('pages/artist.html', title = title, artist = artist, members = members, albums = albums)
     except Exception as e:

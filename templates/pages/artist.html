@@ -95,12 +95,12 @@
             </div>
             <div class="col-lg">
                 <div class="tracklist">
-                    <ol>
+                    <ul>
                         {% for track in album['tracklist'] %}
-                        <li class="track"><a href="/song/?song={{ track['id'] }}">{{ track['title'] }}</a></li>
+                        <li class="track"><a href="/song/?song={{ track['id'] }}">{{ track['track_no'] }}. {{ track['title'] }}</a></li>
                         {% endfor %}
                         
-                    </ol>
+                    </ul>
                 </div>
                 <a href="/add-song/?album={{ album['id'] }}" class="btn outline">Add Song To Album</a>
             </div>

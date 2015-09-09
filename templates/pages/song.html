@@ -50,16 +50,16 @@
                 </div>
                 <div class="tracklist">
                     <h4>Tracklist</h4>
-                    <ol>
+                    <ul>
                         {% for track in album['tracklist']['tracks'] %}
                         {% if song['id'] == track['id'] %}
-                        <li class="track active"><a href="#">{{ track['title'] }}</a></li>
+                        <li class="track active"><a href="#">{{ track['track_no'] }}. {{ track['title'] }}</a></li>
                         {% else %}
-                        <li class="track"><a href="?song={{ track['id'] }}">{{ track['title'] }}</a></li>
+                        <li class="track"><a href="?song={{ track['id'] }}">{{ track['track_no'] }}. {{ track['title'] }}</a></li>
                         {% endif %}
                         {% endfor %}
                         <a href="/add-song/?album={{ album['id'] }}" class="btn outline">Add Song To Album</a>
-                    </ol>
+                    </ul>
                 </div>
             </div>
         </div>

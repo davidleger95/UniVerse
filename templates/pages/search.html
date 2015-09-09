@@ -1,19 +1,31 @@
 {% extends "page-wrapper.html"%}
 
 {% block body %}
-<div class="container" style="">
+<div class="container search-results" style="">
     <div class="row">
         <h1>Search Results For: <span class="sub">"{{ search }}"</span></h1>
-        
+        {% if songs %}
         <h3>Songs</h3>
-        <ul>
+        <ul class="songs">
             {% for song in songs %}
             <li>
-                <h2><a href="/song/?song={{ song['id'] }}">{{ song['title'] }}</a></h2>
+                <img class="album-art" src="{{song['artwork'] }}" alt="artwork">
+                <div class="meta">
+                    <h2 class="title">
+                        <a href="/song/?song={{ song['id'] }}">{{ song['title'] }}</a><br />
+                        <span class="sub">
+                            from <a href="#">{{ song['album'] }}</a>
+                            by <a href="#">{{ song['artist'] }}</a>
+                        </span>
+                    </h2>
+                    
+                </div>
             </li>
             {% endfor %}
         </ul>
+        {% endif %}
         
+        {% if albums %}
         <h3>Albums</h3>
         <ul>
             {% for album in albums %}
@@ -22,7 +34,9 @@
             </li>
             {% endfor %}
         </ul>
+        {% endif %}
         
+        {% if artists %}
         <h3>Artists</h3>
         <ul>
             {% for artist in artists %}
@@ -31,6 +45,7 @@
             </li>
             {% endfor %}
         </ul>
+        {% endif %}
         
     </div>
 </div>
