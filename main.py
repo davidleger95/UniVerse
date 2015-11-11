@@ -60,7 +60,7 @@ def search():
         # Establish connection
         c, conn = connection()
         
-        result = c.execute("SELECT t.track_id, t.title,  FROM tracks t JOIN WHERE (t.title LIKE (%s) OR t.lyrics LIKE (%s))", [sanitize(query), sanitize(query)])
+        result = c.execute("SELECT * FROM tracks t WHERE (t.title LIKE (%s) OR t.lyrics LIKE (%s))", [sanitize(query), sanitize(query)])
         songResults = c.fetchall()
         
         result = c.execute("SELECT * FROM albums WHERE (title LIKE (%s) OR genre LIKE (%s))", [sanitize(query), sanitize(query)])

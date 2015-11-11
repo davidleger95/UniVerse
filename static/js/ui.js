@@ -77,7 +77,7 @@ $(document).ready(function(){
 function filter(element) {
     var value = $(element).val();
 
-    $(".tracklist > ol > li").each(function() {
+    $(".tracklist > ul > li").each(function() {
         if ($(this).text().toLowerCase().search(value) > -1) {
             $(this).slideDown(200);
             $('.album-meta').show();
