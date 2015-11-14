@@ -614,7 +614,6 @@ def addAlbum():
 def addArtist():
     try:
         if request.method == "POST":
-            flash("POST")
             artist = {}
             artist['id'] = request.args.get('artist')
             artist['name'] = request.form['name']
@@ -680,59 +679,93 @@ def addArtist():
 #   VIEW CONTENT PAGES
 # --------------------------------------------------
 
-# VIEW SONG
-@app.route('/song/', methods = ['GET', 'POST'])
-def song():
+# All Tracks
+@app.route('/tracks/', methods = ['GET'])
+def all_tracks():
     try:
-         
-        track_id = request.args.get('song')
+        
         
         # Establish connection
         c, conn = connection()
-        song = {}
         
-        result = c.execute("SELECT * FROM tracks WHERE track_id = (%s)", [sanitize(track_id)])
-        data = c.fetchone()
-        flash("hi")
-        song['id'] = data[0]
-        song['album_id'] = data[1]
-        song['track_number'] = data[2]
-        song['title'] = data[3].decode('utf-8')
-        song['lyrics'] = nl2br(data[4].decode('utf-8'))
-        if data[5] != None and 'youtube' in data[5]:
-            song['media_link'] = data[5].split("=")[1]
-        else:
-            song['media_link'] = ''
-        result = c.execute("SELECT t.track_id, t.track_no, t.title, a.album_id, a.title, a.genre, a.year_released, a.artwork, ar.artist_id, ar.name FROM tracks T JOIN albums a ON t.album_id=a.album_id JOIN artists ar ON a.artist_id=ar.artist_id WHERE t.album_id=(%s) ORDER BY t.track_no", [song['album_id']])
+        
+        result = c.execute("SELECT * FROM tracks;")
+        
         data = c.fetchall()
+        for row in data:
+            id = row['track_id']
+            row['track_id'] = int(id)
+
+        c.close()
+        conn.close()
+        return jsonify({'tracks': data})
+
+    except:
+        flash(e)
+        return(str(e))
+    
+# --------------------------------------------------
+
+# VIEW SONG
+@app.route('/<int:artist_id>/<int:album_id>/<int:track_id>/', methods = ['GET'])
+def song(artist_id, album_id, track_id):
+    try:
+         
+        #track_id = request.args.get('song')
         
-        album = {}
+        # Establish connection
+        c, conn = connection()
+        #song = {}
         
-        album['id'] = data[0][3]
-        album['title'] = data[0][4]
-        album['artwork'] = data[0][7]
-        album['genre'] = data[0][5]
-        album['year'] = data[0][6]
+        result = c.execute("SELECT * FROM tracks WHERE track_id = (%s)" % track_id)
+        track = c.fetchone()
         
-        album['tracklist'] = {}
-        album['tracklist']['tracks'] = []
-        for track in data:
-            album['tracklist']['tracks'].append({'title': track[2], 'track_no': track[1], 'id': track[0]})
-            
+        #track = c.fetchone()
+        id = track['track_id']
+        track['track_id'] = int(id)
+        
+        
+        
+        result = c.execute("SELECT t.track_id, t.track_no, t.title, a.album_id, a.title, a.genre, a.year_released, a.artwork, ar.artist_id, ar.name FROM tracks T JOIN albums a ON t.album_id=a.album_id JOIN artists ar ON a.artist_id=ar.artist_id WHERE t.album_id=(%s) ORDER BY t.track_no", [track['album_id']])
+        album = c.fetchall()
+        
         # Close Connection
         conn.commit()
         c.close()
         conn.close()
         #gc.collect()
+        track['album'] = album
         
-        title = song['title']
+        return jsonify({ 'track': track })
         
-        artist = {}
-        artist['id'] = data[0][8]
-        artist['name'] = data[0][9]
-        
-        return render_template('pages/song.html', title = title, song = song, album = album, artist = artist)
     except Exception as e:
+        flash(e)
+        return(str(e))
+    
+# --------------------------------------------------
+
+# All Albums
+@app.route('/albums/', methods = ['GET'])
+def all_albums():
+    try:
+        
+        
+        # Establish connection
+        c, conn = connection()
+        
+        
+        result = c.execute("SELECT * FROM albums;")
+        
+        data = c.fetchall()
+        for row in data:
+            id = row['album_id']
+            row['album_id'] = int(id)
+
+        c.close()
+        conn.close()
+        return jsonify({'albums': data})
+
+    except:
         flash(e)
         return(str(e))
     
@@ -742,8 +775,6 @@ def song():
 @app.route('/artists/', methods = ['GET'])
 def all_artists():
     try:
-        
-        artist_id = request.args.get('artist')
         
         # Establish connection
         c, conn = connection()
@@ -761,7 +792,8 @@ def all_artists():
         return jsonify({'artists': data})
 
     except:
-        abort(404)
+        flash(e)
+        return(str(e))
     
 # --------------------------------------------------
 
@@ -769,13 +801,8 @@ def all_artists():
 @app.route('/artists/', methods = ['POST'])
 def add_artist():
     try:
-        if not request.json or not 'Name' in request.json:
-		abort(400)
-        name = request.json.get('Name');
-        province = request.json.get('Province',"");
-        language = request.json.get('Language',"");
-        level = request.json.get('Level', "");
         
+        #DEVTIP change [] to ()
         artist = {}
         artist['id'] = request.json.get('artist')
         artist['name'] = request.json.get['name']
@@ -804,10 +831,8 @@ def add_artist():
 def artist(artist_id):
     try:
         
-        
         # Establish connection
         c, conn = connection()
-        
         
         result = c.execute("SELECT * FROM artists WHERE artist_id = (%s);" % artist_id)
         
@@ -821,7 +846,6 @@ def artist(artist_id):
         result = c.execute("SELECT * FROM albums WHERE artist_id = (%s) ORDER BY year_released DESC;", [artist_id])
         albums = c.fetchall()
         
-        #albums = []
         for album in albums:
             result = c.execute("SELECT track_id, title, track_no FROM tracks WHERE album_id = (%s) ORDER BY track_no;", [album['album_id']])
             tracklist = c.fetchall()
@@ -840,6 +864,99 @@ def artist(artist_id):
     
 # --------------------------------------------------
 
+# Add album to artist
+@app.route('/<int:artist_id>/', methods = ['POST'])
+def addAlbumToArtist(artist_id):
+    try:
+        title = "Add Album"
+        
+        album = {}
+        
+        if request.method == "POST":
+            
+            # TODO modify to recieve JSON data.
+            album['title'] = request.form['title']
+            #album['artwork'] = request.form['artwork']
+            album['genre'] = request.form['genre']
+            album['year'] = request.form['year']
+            
+            file = request.files['artwork']
+            
+            title = album['title']
+            
+            c, conn = connection()
+            
+            
+            
+            if file and allowed_file(file.filename):
+                image = secure_filename("album_img" + str(album['id']) + "." + file.filename.rsplit('.', 1)[1])
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], image))
+                c.execute("INSERT INTO albums ( artist_id, title, genre, year_released, artwork) VALUES(%s, %s, %s, %s, %s)", [sanitize(album['artist_id']), sanitize(album['title']), sanitize(album['genre']), sanitize(album['year']), sanitize(image)])
+            else:
+                c.execute("INSERT INTO albums ( artist_id, title, genre, year_released) VALUES(%s, %s, %s, %s)", [sanitize(album['artist_id']), sanitize(album['title']), sanitize(album['genre']), sanitize(album['year'])])
+            # Close Connection
+            conn.commit()
+            c.close()
+            conn.close()
+            #gc.collect()
+            flash("Updated!")
+            return redirect('/artist/?artist=' + str(album['artist_id']) + "#album" + str(album['id']))
+        elif request.method == "GET":
+            title = "Add Album"
+            album = {}
+            artist = {}
+           
+            # ------------------------------
+            
+            return render_template('pages/edit-album.html', title = title, album = album, artist = artist)
+        else:
+            return render_template('err/404.html', title = title)
+    except Exception as e:
+        flash(e)
+        return(str(e))
+    
+# --------------------------------------------------
+
+# VIEW SONG
+@app.route('/<int:artist_id>/<int:album_id>/', methods = ['GET'])
+def album(artist_id, album_id):
+    try:
+         
+        #track_id = request.args.get('song')
+        
+        # Establish connection
+        c, conn = connection()
+        #song = {}
+       
+        
+        #track = c.fetchone()
+        
+        
+        
+        
+        result = c.execute("SELECT a.album_id, a.title, a.genre, a.year_released, a.artwork, ar.artist_id, ar.name FROM albums a JOIN artists ar ON a.artist_id=ar.artist_id WHERE a.album_id=(%s)", [album_id])
+        album = c.fetchone()
+        
+        id = album['album_id']
+        album['album_id'] = int(id)
+        
+        result = c.execute("SELECT track_id, title, track_no FROM tracks WHERE album_id = (%s) ORDER BY track_no;", [album['album_id']])
+        tracklist = c.fetchall()
+        album['tracklist'] = tracklist
+        
+        # Close Connection
+        conn.commit()
+        c.close()
+        conn.close()
+        #gc.collect()
+        
+        return jsonify({ 'album': album })
+        
+    except Exception as e:
+        flash(e)
+        return(str(e))
+    
+# --------------------------------------------------
 
 # --------------------------------------------------
 #   ERROR HANDLING PAGES
