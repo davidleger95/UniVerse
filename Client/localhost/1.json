@@ -1,0 +1,200 @@
+{
+  "artist": {
+    "albums": [
+      {
+        "album_id": 3, 
+        "artist_id": 1, 
+        "artwork": "album_img3.jpg", 
+        "genre": "Symphonic Metal", 
+        "title": "Endless Forms Most Beautiful", 
+        "tracklist": [
+          {
+            "title": "Shudder Before The Beautiful", 
+            "track_id": 22, 
+            "track_no": 1
+          }, 
+          {
+            "title": "Weak Fantasy", 
+            "track_id": 23, 
+            "track_no": 2
+          }, 
+          {
+            "title": "Elan", 
+            "track_id": 24, 
+            "track_no": 3
+          }, 
+          {
+            "title": "Yours Is An Empty Hope", 
+            "track_id": 25, 
+            "track_no": 4
+          }, 
+          {
+            "title": "Our Decades In The Sun", 
+            "track_id": 26, 
+            "track_no": 5
+          }, 
+          {
+            "title": "My Walden", 
+            "track_id": 27, 
+            "track_no": 6
+          }, 
+          {
+            "title": "Endless Forms Most Beautiful", 
+            "track_id": 28, 
+            "track_no": 7
+          }, 
+          {
+            "title": "Edema Ruh", 
+            "track_id": 29, 
+            "track_no": 8
+          }, 
+          {
+            "title": "Alpenglow", 
+            "track_id": 30, 
+            "track_no": 9
+          }, 
+          {
+            "title": "The Greatest Show On Earth", 
+            "track_id": 31, 
+            "track_no": 11
+          }
+        ], 
+        "year_released": 2015
+      }, 
+      {
+        "album_id": 1, 
+        "artist_id": 1, 
+        "artwork": "album_img1.jpg", 
+        "genre": "Symphonic Metal", 
+        "title": "Imaginaerum", 
+        "tracklist": [
+          {
+            "title": "Takatalvi", 
+            "track_id": 20, 
+            "track_no": 1
+          }, 
+          {
+            "title": "Storytime", 
+            "track_id": 13, 
+            "track_no": 2
+          }, 
+          {
+            "title": "Ghost River", 
+            "track_id": 15, 
+            "track_no": 3
+          }, 
+          {
+            "title": "Slow, Love, Slow", 
+            "track_id": 19, 
+            "track_no": 4
+          }, 
+          {
+            "title": "Scaretale", 
+            "track_id": 16, 
+            "track_no": 6
+          }, 
+          {
+            "title": "Turn Loose The Mermaids", 
+            "track_id": 21, 
+            "track_no": 7
+          }
+        ], 
+        "year_released": 2011
+      }, 
+      {
+        "album_id": 4, 
+        "artist_id": 1, 
+        "artwork": "album_img4.jpg", 
+        "genre": "Symphonic Metal", 
+        "title": "Once", 
+        "tracklist": [
+          {
+            "title": "Dark Chest Of Wonders", 
+            "track_id": 1, 
+            "track_no": 1
+          }, 
+          {
+            "title": "Wish I Had An Angel", 
+            "track_id": 3, 
+            "track_no": 2
+          }, 
+          {
+            "title": "Nemo", 
+            "track_id": 2, 
+            "track_no": 3
+          }, 
+          {
+            "title": "Planet Hell", 
+            "track_id": 17, 
+            "track_no": 4
+          }, 
+          {
+            "title": "Creek Mary\\'s Blood", 
+            "track_id": 18, 
+            "track_no": 5
+          }
+        ], 
+        "year_released": 2005
+      }, 
+      {
+        "album_id": 2, 
+        "artist_id": 1, 
+        "artwork": "album_img2.jpg", 
+        "genre": "Symphonic Metal", 
+        "title": "Century Child", 
+        "tracklist": [
+          {
+            "title": "Bless The Child", 
+            "track_id": 4, 
+            "track_no": 1
+          }, 
+          {
+            "title": "End Of All Hope", 
+            "track_id": 5, 
+            "track_no": 1
+          }, 
+          {
+            "title": "Dead To The World", 
+            "track_id": 6, 
+            "track_no": 3
+          }, 
+          {
+            "title": "Ever Dream", 
+            "track_id": 7, 
+            "track_no": 4
+          }
+        ], 
+        "year_released": 2003
+      }, 
+      {
+        "album_id": 12, 
+        "artist_id": 1, 
+        "artwork": "album_img12.jpg", 
+        "genre": "Power Metal", 
+        "title": "Wishmaster", 
+        "tracklist": [], 
+        "year_released": 2000
+      }
+    ], 
+    "artist_id": 1, 
+    "biography": "Nightwish is a Finnish symphonic metal band from Kitee, Finland. The band was formed in 1996 by lead songwriter and keyboardist Tuomas Holopainen, guitarist Emppu Vuorinen, and lead singer Tarja Turunen. The band soon picked up drummer Jukka Nevalainen, and then bassist Sami V\u00e4nska after the release of its debut album, Angels Fall First (1997). In 2002, Vanska was replaced by Marco Hietala, who also took over the male vocalist role previously filled by Holopainen or guest singers.", 
+    "country": "Finland", 
+    "genre": "Symphonic Metal", 
+    "members": [
+      {
+        "name": "Tuomas Holopainen", 
+        "role": "Piano/Keyboard"
+      }, 
+      {
+        "name": "Floor Jansen", 
+        "role": "Vocals"
+      }, 
+      {
+        "name": "Marco Hietala", 
+        "role": "Bass/Vocals"
+      }
+    ], 
+    "name": "Nightwish", 
+    "year_formed": 1996
+  }
+}
