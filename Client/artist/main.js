@@ -14,7 +14,7 @@ var ViewModel = function() {
     
     $.ajax({
         type: "GET",
-        url: "localhost/1.json",
+        url: "http://localhost:5000/2",
         dataType: 'json',
         success: function(result){
             console.log(result.artist.biography);

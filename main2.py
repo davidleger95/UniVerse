@@ -13,6 +13,7 @@ import json
 from wtforms import Form, BooleanField, TextField, PasswordField, validators
 from passlib.hash import sha256_crypt
 from MySQLdb import escape_string as sanitize
+from flask.ext.cors import CORS
 
 from werkzeug import secure_filename
 UPLOAD_FOLDER = 'static/uploads'
@@ -22,6 +23,7 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 from db_connect2 import connection
 
 app = Flask(__name__)
+CORS(app, resorces={r'/d/*': {"origins": '*'}})
 app.secret_key = 'aqwsedrftgyhujikolp1654as'
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -37,19 +39,9 @@ def allowed_file(filename):
             filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 # --------------------------------------------------
-#   SECTION Define Routes & Templates
+#   SECTION Define Routes
 # --------------------------------------------------
 
-# HOME
-@app.route('/')
-def home():
-    try:
-        title = "Home"
-        return render_template("pages/home.html", title = title)
-    
-    except Exception as e:
-        #flash(e)
-        return str(e)
 
 @app.route('/search/', methods = ['GET', 'POST'])
 def search():
@@ -92,7 +84,7 @@ def search():
         
         #TODO search artists
         
-        return render_template("pages/search.html", title = title, search = search, songs = songs, albums = albums, artists = artists)
+        #return render_template("pages/search.html", title = title, search = search, songs = songs, albums = albums, artists = artists)
     except Exception as e:
         #flash(e)
         return str(e)
