@@ -96,56 +96,48 @@ def search():
 #   USER AUTHENTICATION
 # --------------------------------------------------
 
-# LOGIN
-@app.route('/login/', methods = ['GET', 'POST'])
-def login():
-    
-    #error = "Hey"
-    title = "Login"
-    request.form.email = "test"
+
+def userAuth(attempted_username, attempted_password):
+    print attempted_username + " " + attempted_password
     try:
-        if request.method == "POST":
-            attempted_username = request.form['email']
-            attempted_password = request.form['password']
-            
-            flash(attempted_username)
-            flash(attempted_password)
-            
-            #TODO check username and password with db; set session vars
-            c, conn = connection()
-            res = c.execute("SELECT * FROM users WHERE username = (%s)", [sanitize(attempted_username)])
-            data = c.fetchone()
-            conn.commit()
-            c.close()
-            conn.close()
-            #gc.collect()
-            
-            if int(res) > 0:
-                db_password = data[2]
-                if sha256_crypt.verify(attempted_password, db_password):
-                    session['logged_in'] = True
-                    session['user_id'] = data[0]
-                    session['username'] = data[1]
-                    session['user_email'] = data[3]
-                    session['user_type'] = data[4]
-                    session['user_fname'] = data[5]
-                    session['user_lname'] = data[6]
-                    session['user_active'] = data[7]
-                    session['user_image'] = data[8]
-                    flash(data)
-                    return redirect(url_for('home'))
-            
-            flash("Username or password was incorrect. Please try again.")
-            #TODO end --------------------------------------------------
-            
-        return render_template("pages/login.html", title=title)
-         
+        print("1")
+        #check username and password with db
+        c, conn = connection()
+        res = c.execute("SELECT * FROM users WHERE username = 'alex'")
+        print("2.1")
+        user = c.fetchone()
+        print("2")
+        conn.commit()
+        c.close()
+        conn.close()
+        #gc.collect()
         
+        if int(res) > 0:
+            print("3")
+            db_password = user['password']
+            if sha256_crypt.verify(attempted_password, db_password):
+                id = user['user_id']
+                user['user_id'] = int(id)
+                
+                user['logged_in'] = True
+                
+                return user
+        else:
+            return False
     except Exception as e:
-        flash(e)
-        error = "Failed."
-    
-    return render_template("pages/login.html", title=title, error = error)
+        return False
+
+# LOGIN
+@app.route('/login/', methods = ['POST'])
+def login():
+    print "Hello"
+    #return jsonify({ "userdata": False })
+    data = request.get_json(force=True)
+    usernameIn = data['username']
+    passwordIn = data['password']
+    print "Hello " + usernameIn
+    user = userAuth(usernameIn, passwordIn)
+    return jsonify({ "userdata": user})
 
 # --------------------------------------------------
 
