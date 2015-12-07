@@ -22,7 +22,7 @@ var ViewModel = function() {
     var artist = queryParameters.artist;
     var album = queryParameters.album;
     var song = queryParameters.song;
-    var url = "http://localhost:5000/song/" + song;
+    var url = "http://localhost:5000/album/" + album;
     
     var self = this;
     
@@ -43,17 +43,11 @@ var ViewModel = function() {
         url: url,
         dataType: 'json',
         success: function(result){
-            console.log(result.track.title);
-            self.title(result.track.title);
-            self.lyrics(result.track.lyrics);
-            self.medialink(result.track.media_link);
-            self.track_id(result.track.track_id);
-            self.track_no(result.track.track_no);
-            self.artwork(result.track.album[0].artwork);
-            self.album_title(result.track.album[0]['a.title']);
-            self.album_id(result.track.album[0].album_id);
-            self.artist_id(result.track.album[0].artist_id);
-            self.name(result.track.album[0].name);
+            console.log(result.album.title);
+            self.title(result.album.title);
+            self.album_id(result.album.album_id);
+            self.artist_id(result.album.artist_id);
+            self.name(result.album.name);
         },
         
         error: function(result){
@@ -75,9 +69,9 @@ var ViewModel = function() {
         console.log(ko.toJSON(jsonData));
         
         console.log(queryData);
-        var resource = "http://localhost:5000/" + self.artist_id() + "/" + self.album_id() + "/" + self.track_id() + "/"
+        var resource = "http://localhost:5000/" + self.artist_id() + "/" + self.album_id() + "/";
         $.ajax({
-            type: "POST",
+            type: "PUT",
             url: resource,
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
@@ -87,12 +81,13 @@ var ViewModel = function() {
             success: function(result){
 				console.log("hello");
                 if (result.error){
-                    alert("Error" + result.message);
+                    alert("Error: " + result.message);
                 }
 
                 else{
-                    alert("Success" + result.message);
-                     window.location.href = "/song/?artist=" + self.artist_id() + "&album=" + self.album_id() + "&song=" + self.track_id();
+                    alert("Success: " + result.message);
+                     window.location.href = "/song/?artist=" + self.artist_id() + "&album=" + self.album_id() + "&song=" + result.track_id;
+                    console.log(result)
                 }
                 
             },

@@ -43,47 +43,30 @@ def allowed_file(filename):
 # --------------------------------------------------
 
 
-@app.route('/search/', methods = ['GET', 'POST'])
-def search():
+@app.route('/search/<search>/', methods = ['GET', 'POST'])
+def search(search):
+    
     try:
         title = "Search"
-        search = request.args.get('search')
-        query = "%" + request.args.get('search') + "%"
+        query = "%" + search + "%"
+        
         # Establish connection
         c, conn = connection()
         
-        result = c.execute("SELECT * FROM tracks t WHERE (t.title LIKE (%s) OR t.lyrics LIKE (%s))", [sanitize(query), sanitize(query)])
+        result = c.execute("SELECT t.track_id, t.title, a.album_id, a.title, a.artwork, ar.artist_id, ar.name  FROM tracks t, albums a, artists ar WHERE (t.title LIKE (%s) OR t.lyrics LIKE (%s)) AND t.album_id = a.album_id AND a.artist_id = ar.artist_id ORDER BY t.title;", [sanitize(query), sanitize(query)])
         songResults = c.fetchall()
         
-        result = c.execute("SELECT * FROM albums WHERE (title LIKE (%s) OR genre LIKE (%s))", [sanitize(query), sanitize(query)])
+        result = c.execute("SELECT a.album_id, a.title, a.genre, a.year_released, a.artwork, ar.artist_id, ar.name FROM albums a, artists ar WHERE (a.title LIKE (%s) OR a.genre LIKE (%s) OR a.year_released LIKE (%s)) AND a.artist_id = ar.artist_id;", [sanitize(query), sanitize(query), sanitize(query)])
         albumResults = c.fetchall()
         
-        result = c.execute("SELECT * FROM artists WHERE (name LIKE (%s) OR genre LIKE (%s) OR country LIKE (%s))", [sanitize(query), sanitize(query), sanitize(query)])
+        result = c.execute("SELECT ar.artist_id, ar.name, ar.genre, ar.country, a.artwork FROM artists ar LEFT JOIN albums a ON a.artist_id = ar.artist_id WHERE (name LIKE (%s) OR ar.genre LIKE (%s) OR country LIKE (%s)) GROUP BY ar.artist_id;", [sanitize(query), sanitize(query), sanitize(query)])
         artistResults = c.fetchall()
         
         conn.commit()
         c.close()
         conn.close()
-        #gc.collect()
-        #flash(data)
         
-        songs = []
-        albums = []
-        artists = []
-        
-        for song in songResults:
-            songs.append({'id': song[0], 'album_id': song[1], 'track_number': song[2], 'title': song[3], 'lyrics': song[4], 'media_link': song[5]})
-            
-        for album in albumResults:
-            albums.append({'id': album[0], 'artist_id': album[1], 'title': album[2], 'genre': album[3], 'year': album[4], 'artwork': song[5]})
-            
-        for artist in artistResults:
-            artists.append({'id': artist[0], 'biography': artist[1], 'name': artist[2], 'genre': artist[3], 'country': artist[4], 'year': artist[5]})
-        
-        #TODO search albums
-        
-        #TODO search artists
-        
+        return jsonify({ "tracks": songResults, "albums": albumResults, "artists": artistResults })
         #return render_template("pages/search.html", title = title, search = search, songs = songs, albums = albums, artists = artists)
     except Exception as e:
         #flash(e)
@@ -96,32 +79,27 @@ def search():
 #   USER AUTHENTICATION
 # --------------------------------------------------
 
-
 def userAuth(attempted_username, attempted_password):
-    print attempted_username + " " + attempted_password
     try:
-        print("1")
         #check username and password with db
         c, conn = connection()
-        res = c.execute("SELECT * FROM users WHERE username = 'alex'")
-        print("2.1")
+        res = c.execute("SELECT * FROM users WHERE username = (%s)", [attempted_username] )
         user = c.fetchone()
-        print("2")
         conn.commit()
         c.close()
         conn.close()
         #gc.collect()
         
         if int(res) > 0:
-            print("3")
             db_password = user['password']
             if sha256_crypt.verify(attempted_password, db_password):
                 id = user['user_id']
                 user['user_id'] = int(id)
-                
+                user['password'] = attempted_password
                 user['logged_in'] = True
                 
                 return user
+            return False
         else:
             return False
     except Exception as e:
@@ -130,84 +108,51 @@ def userAuth(attempted_username, attempted_password):
 # LOGIN
 @app.route('/login/', methods = ['POST'])
 def login():
-    print "Hello"
     #return jsonify({ "userdata": False })
     data = request.get_json(force=True)
     usernameIn = data['username']
     passwordIn = data['password']
-    print "Hello " + usernameIn
     user = userAuth(usernameIn, passwordIn)
     return jsonify({ "userdata": user})
 
 # --------------------------------------------------
 
-# LOGOUT
-@app.route('/logout/')
-def logout():
-    
-    session.clear()
-    
-    return redirect(url_for('login'))
 
-# --------------------------------------------------
-
-@app.route('/signup/', methods = ['GET', 'POST'])
+@app.route('/register/', methods = ['PUT'])
 def signup():
     title = "Sign Up"
+    data = request.get_json(force=True)
+    email = data['email']
+    username = data['username']
+    password = data['password']
+    password2 = data['confirmPassword']
+            
+    #return jsonify({ "userdata": email })
+    
     try:
-        
-        if request.method == "POST":
-            
-            email = request.form['email']
-            username = request.form['username']
-            password = request.form['password']
-            password2 = request.form['repeatpassword']
-            
-            flash(username)
-            flash(password)
-            
-            # confirm password
-            if password != password2:
-                flash("Passwords do not match.")
-                return render_template('pages/signup.html', title = title)
-            if len(password) < 8:
-                flash("Password not long enough.")
-                return render_template('pages/signup.html', title = title)
-            password = sha256_crypt.encrypt(str(password))
-            
-            # Check if username is available
-            c, conn = connection()
-            db_username = c.execute("SELECT * FROM users WHERE username = (%s)", [sanitize(username)])
-            if int(db_username) > 0:
-                flash("Username taken.")
-                return render_template('pages/signup.html', title = title)
-            
-            # Check if email is already used.
-            db_email = c.execute("SELECT * FROM users WHERE email = (%s)", [sanitize(email)])
-            if int(db_email) > 0:
-                flash("An account already exists with that email.")
-                return render_template('pages/signup.html', title = title)
-            
-            # Credentials are good! Add new user and close the connection.
-            c.execute("INSERT INTO users (username, password, email) VALUES (%s, %s, %s)",
-                     [sanitize(username), sanitize(password), sanitize(email)])
-            conn.commit()
-            c.close()
-            conn.close()
-            #gc.collect()
+        password = sha256_crypt.encrypt(str(password))
 
-            flash("You are now Registered!")
+        # Check if username is available
+        c, conn = connection()
+        db_username = c.execute("SELECT * FROM users WHERE username = (%s)", [sanitize(username)])
+        if int(db_username) > 0:
+            return jsonify({ "userdata": False, "error": "Username Taken." })
 
-            session['logged_in'] = True
-            session['user_id'] = 1
-            session['username'] = username
-            session['user_email'] = email
-            session['user_type'] = 0
-            session['user_active'] = 0
-            session['user_image'] = 'placeholder.jpg'
-            return redirect(url_for('home'))
+        # Check if email is already used.
+        db_email = c.execute("SELECT * FROM users WHERE email = (%s)", [sanitize(email)])
+        if int(db_email) > 0:
+            return jsonify({ "userdata": False, "error": "Email already used by another account." })
+
+        # Credentials are good! Add new user and close the connection.
+        c.execute("INSERT INTO users (username, password, email) VALUES (%s, %s, %s)",
+                 [sanitize(username), sanitize(password), sanitize(email)])
+        conn.commit()
+        c.close()
+        conn.close()
+        #gc.collect()
+
+        return jsonify({ "userdata": True, "message": "You are now registered!" })
                 
-        return render_template('pages/signup.html', title = title)
     except Exception as e:
         flash(e)
         return(str(e))
@@ -298,61 +243,72 @@ def settings():
 # --------------------------------------------------
 
 # EDIT SONG
-@app.route('/edit-song/', methods = ['GET', 'POST'])
-def editSong():
+@app.route('/<int:artist_id>/<int:album_id>/<int:track_id>/', methods = ['POST'])
+def editSong(artist_id, album_id, track_id):
+    
+    data = request.get_json(force=True)
+    
+    if userAuth(data['username'], data['password']) == False:
+        print "sup"
+        return jsonify({'error': True, 'message': 'You are not logged in!'} )
+       
     try:
-        title = "Edit Song"
-        if request.method == "POST":
-            flash("one!")
-            song = {}
-
-            song['id'] = request.args.get('song')
-            #song['album_id'] = data[1]
-            song['track_number'] = request.form['track_number']
-            song['title'] = request.form['title'].encode('utf-8')
-            song['lyrics'] = request.form['lyrics'].encode('utf-8')
-            song['media_link'] = request.form['media_link']
-            
-            title = song['title']
-            flash("two!")
-            c, conn = connection()
-            c.execute("UPDATE tracks SET title = (%s), track_no = (%s), lyrics = (%s), media_link = (%s) WHERE track_id = (%s)", [sanitize(song['title']), sanitize(song['track_number']), song['lyrics'], sanitize(song['media_link']),sanitize(song['id'])])
-            # Close Connection
-            conn.commit()
-            c.close()
-            conn.close()
-            #gc.collect()
-            flash("Updated!")
-            
-            return redirect('/song/?song=' + str(song['id']))
+        song = {}
+        song['id'] = str(track_id)
+        #song['album_id'] = data[1]
+        song['track_number'] = str(data['track_number'])
+        song['title'] = data['title'].encode('utf-8')
+        song['lyrics'] = data['lyrics'].encode('utf-8')
+        song['media_link'] = data['media_link'].encode('utf-8')
         
-        elif request.method == "GET":
-            
-            track_id = request.args.get('song')
-            # Establish connection
-            c, conn = connection()
-
-            result = c.execute("SELECT * FROM tracks WHERE track_id = (%s)", [sanitize(track_id)])
-            data = c.fetchone()
-            # Close Connection
-            conn.commit()
-            c.close()
-            conn.close()
-            #gc.collect()
-            
-            song = {}
-            
-            song['id'] = data[0]
-            song['album_id'] = data[1]
-            song['track_number'] = data[2]
-            song['title'] = data[3].decode('utf-8')
-            song['lyrics'] = data[4].decode('utf-8')
-            song['media_link'] = data[5]
+        c, conn = connection()
+        c.execute("UPDATE tracks SET title = (%s), track_no = (%s), lyrics = (%s), media_link = (%s) WHERE track_id = (%s);", [sanitize(song['title']), sanitize(song['track_number']), song['lyrics'], sanitize(song['media_link']),sanitize(song['id'])])
+        # Close Connection
+        conn.commit()
+        c.close()
+        conn.close()
         
-        return render_template('pages/edit-song.html', title = title, song = song)
+        return jsonify({'error': False, 'message': 'Save successful!'} )
+
     except Exception as e:
-        flash(e)
-        return(str(e))
+        print "err: " + str(e)
+        return jsonify({'error': True, 'message': 'Something went wrong... Content may not have saved.'} )
+    
+# --------------------------------------------------
+
+# ADD SONG
+@app.route('/<int:artist_id>/<int:album_id>/', methods = ['PUT'])
+def addSong(artist_id, album_id):
+    
+    data = request.get_json(force=True)
+    
+    if userAuth(data['username'], data['password']) == False:
+        print "sup"
+        return jsonify({'error': True, 'message': 'You are not logged in!'} )
+       
+    try:
+        song = {}
+        song['album_id'] = str(album_id)
+        #song['album_id'] = data[1]
+        song['track_number'] = str(data['track_number'])
+        song['title'] = data['title'].encode('utf-8')
+        song['lyrics'] = data['lyrics'].encode('utf-8')
+        song['media_link'] = data['media_link'].encode('utf-8')
+        
+        c, conn = connection()
+        c.execute("INSERT INTO tracks (album_id, track_no, title, lyrics, media_link) VALUES (%s, %s, %s, %s, %s);", [sanitize(song['album_id']), sanitize(song['track_number']), sanitize(song['title']), song['lyrics'], sanitize(song['media_link'])])
+        c.execute("SELECT LAST_INSERT_ID();")
+        data = c.fetchone()
+        # Close Connection
+        conn.commit()
+        c.close()
+        conn.close()
+        print data
+        return jsonify({"error": False, "message": "Song added!", "track_id": data['LAST_INSERT_ID()']})
+
+    except Exception as e:
+        print "err: " + str(e)
+        return jsonify({'error': True, 'message': 'Something went wrong... Content may not have saved.'} )
     
 # --------------------------------------------------
 
@@ -501,38 +457,34 @@ def editArtist():
 
 # ADD SONG
 @app.route('/add-song/', methods = ['GET', 'POST'])
-def addSong():
+def addSong2():
+    data = request.get_json(force=True)
+    
+    if userAuth(data['username'], data['password']) == False:
+        print "sup"
+        return jsonify({'error': True, 'message': 'You are not logged in!'} )
+       
     try:
-        title = "Edit Song"
         song = {}
-        if request.method == "POST":
-            
-
-            song['album_id'] = request.args.get('album')
-            #song['album_id'] = data[1]
-            song['track_number'] = request.form['track_number']
-            song['title'] = request.form['title'].encode('utf-8')
-            song['lyrics'] = request.form['lyrics'].encode('utf-8')
-            song['media_link'] = request.form['media_link']
-            
-            title = song['title']
-            flash("two!")
-            c, conn = connection()
-            c.execute("INSERT INTO tracks (album_id, track_no, title, lyrics, media_link) VALUES (%s, %s, %s, %s, %s);", [sanitize(song['album_id']), sanitize(song['track_number']), sanitize(song['title']), song['lyrics'], sanitize(song['media_link'])])
-            c.execute("SELECT LAST_INSERT_ID();")
-            data = c.fetchone()
-            # Close Connection
-            conn.commit()
-            c.close()
-            conn.close()
-            #gc.collect()
-            flash("Saved!")
-            flash(data)
-            return redirect('/song/?song=' + str(data[0]))
+        song['album_id'] = str(data['album_id'])
+        song['track_number'] = str(data['track_number'])
+        song['title'] = data['title'].encode('utf-8')
+        song['lyrics'] = data['lyrics'].encode('utf-8')
+        song['media_link'] = data['media_link'].encode('utf-8')
         
-        return render_template('pages/edit-song.html', title = title, song = song)
+        c, conn = connection()
+        c.execute("INSERT INTO tracks (album_id, track_no, title, lyrics, media_link) VALUES (%s, %s, %s, %s, %s);", [sanitize(song['album_id']), sanitize(song['track_number']), sanitize(song['title']), song['lyrics'], sanitize(song['media_link'])])
+        c.execute("SELECT LAST_INSERT_ID();")
+        data = c.fetchone()
+        # Close Connection
+        conn.commit()
+        c.close()
+        conn.close()
+
+        return jsonify({"error": False, "message": "Song added!"})
+        
+        return jsonify({"error": True, "message": "Something went wrong...", "track_id": data })
     except Exception as e:
-        flash(e)
         return(str(e))
     
 # --------------------------------------------------
@@ -693,6 +645,45 @@ def all_tracks():
 # VIEW SONG
 @app.route('/<int:artist_id>/<int:album_id>/<int:track_id>/', methods = ['GET'])
 def song(artist_id, album_id, track_id):
+    try:
+         
+        #track_id = request.args.get('song')
+        
+        # Establish connection
+        c, conn = connection()
+        #song = {}
+        
+        result = c.execute("SELECT * FROM tracks WHERE track_id = (%s)" % track_id)
+        track = c.fetchone()
+        
+        #track = c.fetchone()
+        id = track['track_id']
+        track['track_id'] = int(id)
+        
+        
+        
+        result = c.execute("SELECT t.track_id, t.track_no, t.title, a.album_id, a.title, a.genre, a.year_released, a.artwork, ar.artist_id, ar.name FROM tracks T JOIN albums a ON t.album_id=a.album_id JOIN artists ar ON a.artist_id=ar.artist_id WHERE t.album_id=(%s) ORDER BY t.track_no", [track['album_id']])
+        album = c.fetchall()
+        
+        # Close Connection
+        conn.commit()
+        c.close()
+        conn.close()
+        #gc.collect()
+        track['album'] = album
+        
+        return jsonify({ 'track': track })
+        
+    except Exception as e:
+        flash(e)
+        return(str(e))
+    
+# --------------------------------------------------
+
+# VIEW SONG
+@app.route('/song/<int:track_id>/', methods = ['GET'])
+def song2(track_id):
+    
     try:
          
         #track_id = request.args.get('song')
@@ -902,8 +893,8 @@ def addAlbumToArtist(artist_id):
 # --------------------------------------------------
 
 # VIEW SONG
-@app.route('/<int:artist_id>/<int:album_id>/', methods = ['GET'])
-def album(artist_id, album_id):
+@app.route('/album/<int:album_id>/', methods = ['GET'])
+def album(album_id):
     try:
          
         #track_id = request.args.get('song')

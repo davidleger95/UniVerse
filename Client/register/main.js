@@ -1,35 +1,73 @@
-// Here's my data model
-var ViewModel = function() {
+$(document).ready(function(){
+    // Here's my data model
     
-    var artist = 1;
+     var userdata = { 'logged_in': false };
     
-    var self = this;
+    if(JSON.parse(localStorage.getItem("userdata"))){
+        userdata = JSON.parse(localStorage.getItem("userdata"));
 
-    //self.data = ko.observableArray();
-    self.name = ko.observable();
-    self.bio = ko.observable();
-    self.genre = ko.observable();
-    self.year = ko.observable();
-    self.members = ko.observableArray();
+        $('#username').text(userdata['username']);
+        $('#user-img').attr("src", "/static/uploads/" + userdata['image_url']);
+    }
     
-    $.ajax({
-        type: "GET",
-        url: "http://localhost:5000/2",
-        dataType: 'json',
-        success: function(result){
-            console.log(result.artist.biography);
-            self.name(result.artist.name);
-            self.bio(result.artist.biography);
-            self.genre(result.artist.genre);
-            self.year(result.artist.year_formed);
-            self.members(result.artist.members);
-        },
-        error: function(result){
-            console.log(result);
-            alert("Error");
-        }
-    });
- 
-};
+    var ViewModel = function() {
 
-ko.applyBindings(new ViewModel()); // This makes Knockout get to work
+        var self = this;
+        // USER VARS
+
+        self.loggedIn = ko.observable(userdata['logged_in']);
+        //---------------------------
+
+        self.username = ko.observable();
+        self.email = ko.observable();
+        self.confirmPassword = ko.observable();
+        self.password = ko.observable();
+        self.userdata = {}
+
+        $("#register-form").on("submit", function(e){
+            
+            self.userdata.username = self.username;
+            self.userdata.email = self.email;
+            self.userdata.password = self.password;
+            self.userdata.confirmPassword = self.confirmPassword;
+            
+            var queryData = ko.toJSON(self.userdata);
+            console.log(queryData);
+            if(JSON.parse(queryData).password != JSON.parse(queryData).confirmPassword){
+                alert("Passwords do not match!");
+                return false;
+            }
+            $.ajax({
+                type: "PUT",
+                url: "http://localhost:5000/register/",
+                dataType: 'json',
+                contentType: 'json',
+                data: queryData,
+
+                success: function(result){
+                    console.log(result);
+                    if (result.userdata == false){
+                        alert(result.error);
+                        alert("false");
+                    }
+
+                    else{
+                        alert(result.message);
+                        alert("true");
+                        window.location.href = "/home";
+                    }
+
+                },
+
+                error: function(result){
+                    console.log(result);
+                    alert("Error");
+                }
+            });
+        });
+
+    };
+
+    ko.applyBindings(new ViewModel()); // This makes Knockout get to work
+    
+});

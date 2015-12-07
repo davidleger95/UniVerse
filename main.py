@@ -60,13 +60,13 @@ def search():
         # Establish connection
         c, conn = connection()
         
-        result = c.execute("SELECT * FROM tracks t WHERE (t.title LIKE (%s) OR t.lyrics LIKE (%s))", [sanitize(query), sanitize(query)])
+        result = c.execute("SELECT t.track_id, t.title, a.album_id, a.title, a.artwork, ar.artist_id, ar.name  FROM tracks t, albums a, artists ar WHERE (t.title LIKE (%s) OR t.lyrics LIKE (%s)) AND t.album_id = a.album_id AND a.artist_id = ar.artist_id ORDER BY t.title;", [sanitize(query), sanitize(query)])
         songResults = c.fetchall()
         
-        result = c.execute("SELECT * FROM albums WHERE (title LIKE (%s) OR genre LIKE (%s))", [sanitize(query), sanitize(query)])
+        result = c.execute("SELECT a.album_id, a.title, a.genre, a.year_released, a.artwork, ar.artist_id, ar.name FROM albums a, artists ar WHERE (a.title LIKE (%s) OR a.genre LIKE (%s) OR a.year_released LIKE (%s)) AND a.artist_id = ar.artist_id;", [sanitize(query), sanitize(query), sanitize(query)])
         albumResults = c.fetchall()
         
-        result = c.execute("SELECT * FROM artists WHERE (name LIKE (%s) OR genre LIKE (%s) OR country LIKE (%s))", [sanitize(query), sanitize(query), sanitize(query)])
+        result = c.execute("SELECT ar.artist_id, ar.name, ar.genre, ar.country, a.artwork FROM artists ar LEFT JOIN albums a ON a.artist_id = ar.artist_id WHERE (name LIKE (%s) OR ar.genre LIKE (%s) OR country LIKE (%s)) GROUP BY ar.artist_id;", [sanitize(query), sanitize(query), sanitize(query)])
         artistResults = c.fetchall()
         
         conn.commit()
@@ -80,13 +80,13 @@ def search():
         artists = []
         
         for song in songResults:
-            songs.append({'id': song[0], 'album_id': song[1], 'track_number': song[2], 'title': song[3], 'lyrics': song[4], 'media_link': song[5]})
+            songs.append({'id': song[0], 'title': song[1], 'album_id': song[2], 'album_title': song[3],  'artwork': song[4], 'artist_id': song[5], 'artist_name': song[6]})
             
         for album in albumResults:
-            albums.append({'id': album[0], 'artist_id': album[1], 'title': album[2], 'genre': album[3], 'year': album[4], 'artwork': song[5]})
+            albums.append({'id': album[0], 'title': album[1], 'genre': album[2], 'year': album[3], 'artwork': album[4], 'artist_id': album[5], 'artist_name': album[6]})
             
         for artist in artistResults:
-            artists.append({'id': artist[0], 'biography': artist[1], 'name': artist[2], 'genre': artist[3], 'country': artist[4], 'year': artist[5]})
+            artists.append({'id': artist[0], 'name': artist[1], 'genre': artist[2], 'country': artist[3], 'artwork': artist[4]})
         
         #TODO search albums
         
@@ -116,8 +116,8 @@ def login():
             attempted_username = request.form['email']
             attempted_password = request.form['password']
             
-            flash(attempted_username)
-            flash(attempted_password)
+            #flash(attempted_username)
+            #flash(attempted_password)
             
             #TODO check username and password with db; set session vars
             c, conn = connection()
@@ -140,7 +140,7 @@ def login():
                     session['user_lname'] = data[6]
                     session['user_active'] = data[7]
                     session['user_image'] = data[8]
-                    flash(data)
+                    #flash(data)
                     return redirect(url_for('home'))
             
             flash("Username or password was incorrect. Please try again.")
@@ -179,8 +179,8 @@ def signup():
             password = request.form['password']
             password2 = request.form['repeatpassword']
             
-            flash(username)
-            flash(password)
+            #flash(username)
+            #flash(password)
             
             # confirm password
             if password != password2:
@@ -319,7 +319,7 @@ def editSong():
     try:
         title = "Edit Song"
         if request.method == "POST":
-            flash("one!")
+            #flash("one!")
             song = {}
 
             song['id'] = request.args.get('song')
@@ -330,7 +330,7 @@ def editSong():
             song['media_link'] = request.form['media_link']
             
             title = song['title']
-            flash("two!")
+            #flash("two!")
             c, conn = connection()
             c.execute("UPDATE tracks SET title = (%s), track_no = (%s), lyrics = (%s), media_link = (%s) WHERE track_id = (%s)", [sanitize(song['title']), sanitize(song['track_number']), song['lyrics'], sanitize(song['media_link']),sanitize(song['id'])])
             # Close Connection
@@ -449,7 +449,7 @@ def editAlbum():
 def editArtist():
     try:
         if request.method == "POST":
-            flash("POST")
+            #flash("POST")
             artist = {}
             artist['id'] = request.args.get('artist')
             artist['name'] = request.form['name']
@@ -532,7 +532,7 @@ def addSong():
             song['media_link'] = request.form['media_link']
             
             title = song['title']
-            flash("two!")
+            #flash("two!")
             c, conn = connection()
             c.execute("INSERT INTO tracks (album_id, track_no, title, lyrics, media_link) VALUES (%s, %s, %s, %s, %s);", [sanitize(song['album_id']), sanitize(song['track_number']), sanitize(song['title']), song['lyrics'], sanitize(song['media_link'])])
             c.execute("SELECT LAST_INSERT_ID();")
@@ -543,7 +543,7 @@ def addSong():
             conn.close()
             #gc.collect()
             flash("Saved!")
-            flash(data)
+            #flash(data)
             return redirect('/song/?song=' + str(data[0]))
         
         return render_template('pages/edit-song.html', title = title, song = song)
@@ -614,7 +614,7 @@ def addAlbum():
 def addArtist():
     try:
         if request.method == "POST":
-            flash("POST")
+            #flash("POST")
             artist = {}
             artist['id'] = request.args.get('artist')
             artist['name'] = request.form['name']
@@ -693,7 +693,7 @@ def song():
         
         result = c.execute("SELECT * FROM tracks WHERE track_id = (%s)", [sanitize(track_id)])
         data = c.fetchone()
-        flash("hi")
+        #flash("hi")
         song['id'] = data[0]
         song['album_id'] = data[1]
         song['track_number'] = data[2]

@@ -589,7 +589,7 @@ textarea {
   input[type="search"].icon-1,
   input[type="number"].icon-1,
   textarea.icon-1 {
-    background-image: url(/img/icons/1.svg); }
+    background-image: url(/static/img/icons/1.svg); }
   /* line 32, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/1-elements/_inputs.scss */
   input[type="text"].icon-2,
   input[type="email"].icon-2,
@@ -597,7 +597,7 @@ textarea {
   input[type="search"].icon-2,
   input[type="number"].icon-2,
   textarea.icon-2 {
-    background-image: url(/img/icons/2.svg); }
+    background-image: url(/static/img/icons/2.svg); }
   /* line 35, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/1-elements/_inputs.scss */
   input[type="text"].icon-3,
   input[type="email"].icon-3,
@@ -605,7 +605,7 @@ textarea {
   input[type="search"].icon-3,
   input[type="number"].icon-3,
   textarea.icon-3 {
-    background-image: url(/img/icons/3.svg); }
+    background-image: url(/static/img/icons/3.svg); }
   /* line 38, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/1-elements/_inputs.scss */
   input[type="text"].icon-4,
   input[type="email"].icon-4,
@@ -613,7 +613,7 @@ textarea {
   input[type="search"].icon-4,
   input[type="number"].icon-4,
   textarea.icon-4 {
-    background-image: url(/img/icons/4.svg); }
+    background-image: url(/static/img/icons/4.svg); }
   /* line 41, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/1-elements/_inputs.scss */
   input[type="text"].icon-5,
   input[type="email"].icon-5,
@@ -621,7 +621,7 @@ textarea {
   input[type="search"].icon-5,
   input[type="number"].icon-5,
   textarea.icon-5 {
-    background-image: url(/img/icons/5.svg); }
+    background-image: url(/static/img/icons/5.svg); }
   /* line 44, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/1-elements/_inputs.scss */
   input[type="text"].icon-6,
   input[type="email"].icon-6,
@@ -629,7 +629,7 @@ textarea {
   input[type="search"].icon-6,
   input[type="number"].icon-6,
   textarea.icon-6 {
-    background-image: url(/img/icons/6.svg); }
+    background-image: url(/static/img/icons/6.svg); }
   /* line 47, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/1-elements/_inputs.scss */
   input[type="text"].icon-7,
   input[type="email"].icon-7,
@@ -637,7 +637,7 @@ textarea {
   input[type="search"].icon-7,
   input[type="number"].icon-7,
   textarea.icon-7 {
-    background-image: url(/img/icons/7.svg); }
+    background-image: url(/static/img/icons/7.svg); }
   /* line 50, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/1-elements/_inputs.scss */
   input[type="text"].icon-8,
   input[type="email"].icon-8,
@@ -645,7 +645,7 @@ textarea {
   input[type="search"].icon-8,
   input[type="number"].icon-8,
   textarea.icon-8 {
-    background-image: url(/img/icons/8.svg); }
+    background-image: url(/static/img/icons/8.svg); }
   /* line 53, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/1-elements/_inputs.scss */
   input[type="text"].icon-9,
   input[type="email"].icon-9,
@@ -653,7 +653,7 @@ textarea {
   input[type="search"].icon-9,
   input[type="number"].icon-9,
   textarea.icon-9 {
-    background-image: url(/img/icons/9.svg); }
+    background-image: url(/static/img/icons/9.svg); }
   /* line 56, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/1-elements/_inputs.scss */
   input[type="text"].icon-hash,
   input[type="email"].icon-hash,
@@ -661,7 +661,7 @@ textarea {
   input[type="search"].icon-hash,
   input[type="number"].icon-hash,
   textarea.icon-hash {
-    background-image: url(/img/icons/hash.svg); }
+    background-image: url(/static/img/icons/hash.svg); }
   /* line 60, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/1-elements/_inputs.scss */
   input[type="text"].icon-treble,
   input[type="email"].icon-treble,
@@ -669,7 +669,7 @@ textarea {
   input[type="search"].icon-treble,
   input[type="number"].icon-treble,
   textarea.icon-treble {
-    background-image: url(/img/icons/treble.svg); }
+    background-image: url(/static/img/icons/treble.svg); }
   /* line 63, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/1-elements/_inputs.scss */
   input[type="text"].icon-quarter,
   input[type="email"].icon-quarter,
@@ -677,7 +677,7 @@ textarea {
   input[type="search"].icon-quarter,
   input[type="number"].icon-quarter,
   textarea.icon-quarter {
-    background-image: url(/img/icons/quarter.svg); }
+    background-image: url(/static/img/icons/quarter.svg); }
   /* line 66, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/1-elements/_inputs.scss */
   input[type="text"].icon-eighth,
   input[type="email"].icon-eighth,
@@ -685,7 +685,7 @@ textarea {
   input[type="search"].icon-eighth,
   input[type="number"].icon-eighth,
   textarea.icon-eighth {
-    background-image: url(/img/icons/eighth.svg); }
+    background-image: url(/static/img/icons/eighth.svg); }
   /* line 69, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/1-elements/_inputs.scss */
   input[type="text"].icon-sharp,
   input[type="email"].icon-sharp,
@@ -693,7 +693,7 @@ textarea {
   input[type="search"].icon-sharp,
   input[type="number"].icon-sharp,
   textarea.icon-sharp {
-    background-image: url(/img/icons/sharp.svg); }
+    background-image: url(/static/img/icons/sharp.svg); }
   /* line 72, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/1-elements/_inputs.scss */
   input[type="text"].icon-flat,
   input[type="email"].icon-flat,
@@ -701,7 +701,7 @@ textarea {
   input[type="search"].icon-flat,
   input[type="number"].icon-flat,
   textarea.icon-flat {
-    background-image: url(/img/icons/flat.svg); }
+    background-image: url(/static/img/icons/flat.svg); }
   /* line 76, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/1-elements/_inputs.scss */
   input[type="text"].icon-record,
   input[type="email"].icon-record,
@@ -709,7 +709,7 @@ textarea {
   input[type="search"].icon-record,
   input[type="number"].icon-record,
   textarea.icon-record {
-    background-image: url(/img/icons/record.svg); }
+    background-image: url(/static/img/icons/record.svg); }
   /* line 79, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/1-elements/_inputs.scss */
   input[type="text"].icon-ellipsis,
   input[type="email"].icon-ellipsis,
@@ -717,7 +717,7 @@ textarea {
   input[type="search"].icon-ellipsis,
   input[type="number"].icon-ellipsis,
   textarea.icon-ellipsis {
-    background-image: url(/img/icons/ellipsis.svg); }
+    background-image: url(/static/img/icons/ellipsis.svg); }
   /* line 82, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/1-elements/_inputs.scss */
   input[type="text"].icon-search,
   input[type="email"].icon-search,
@@ -725,7 +725,7 @@ textarea {
   input[type="search"].icon-search,
   input[type="number"].icon-search,
   textarea.icon-search {
-    background-image: url(/img/icons/search.svg); }
+    background-image: url(/static/img/icons/search.svg); }
   /* line 85, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/1-elements/_inputs.scss */
   input[type="text"].icon-at,
   input[type="email"].icon-at,
@@ -733,7 +733,7 @@ textarea {
   input[type="search"].icon-at,
   input[type="number"].icon-at,
   textarea.icon-at {
-    background-image: url(/img/icons/at.svg); }
+    background-image: url(/static/img/icons/at.svg); }
   /* line 88, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/1-elements/_inputs.scss */
   input[type="text"].icon-plus,
   input[type="email"].icon-plus,
@@ -741,7 +741,7 @@ textarea {
   input[type="search"].icon-plus,
   input[type="number"].icon-plus,
   textarea.icon-plus {
-    background-image: url(/img/icons/plus.svg); }
+    background-image: url(/static/img/icons/plus.svg); }
   /* line 91, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/1-elements/_inputs.scss */
   input[type="text"].icon-no,
   input[type="email"].icon-no,
@@ -749,7 +749,7 @@ textarea {
   input[type="search"].icon-no,
   input[type="number"].icon-no,
   textarea.icon-no {
-    background-image: url(/img/icons/no.svg); }
+    background-image: url(/static/img/icons/no.svg); }
 
 /* line 96, /Users/David/Documents/UniVerse/Resources/UI Web/static/_scss/1-elements/_inputs.scss */
 textarea {

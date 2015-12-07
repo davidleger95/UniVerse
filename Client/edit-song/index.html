@@ -7,7 +7,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
         <link xmlns="http://www.w3.org/1999/xhtml" rel="shortcut icon" type="image/png" href="/assets/img/badge-sm.png"/>
-        <title>UniVerse | {{ title }}</title>
+        <title data-bind='text: title'>UniVerse | Edit Song</title>
         <link rel= "stylesheet" type= "text/css" href= "/css/main.css">
     </head>
     <body>
@@ -30,137 +30,146 @@
                     </form>
                 </li>
             </ul>
+            <span data-bind = "if: loggedIn">
             <ul class="navbar-right col-sm">
-                
-                <!--
-                {% if session['logged_in'] %}
-                <!-- if LOGGED_IN ->
+
+                <!-- if LOGGED_IN -->
                 <li class="nav-item right">
                     <a href="#">
-                        {{ session['username'] }}
-                        <img src="/static/uploads/{{ session['user_image'] }}">
+                        <span id="username"></span>
+                        <img id="user-img" src="#">
                     </a>
                     <ul class="dropdown-menu">
                         <li class="dropdown-item">
                             <a href="/settings">Settings  ø</a>
                         </li>
                         <li class="dropdown-item dark">
-                            <a href="/logout">Logout <</a>
+                            <a href="/login">Logout <</a>
                         </li>
                     </ul>
                 </li>
-                
-                <!-- ENDIF ->
-                {% else %} -->
-                
+            </ul>
+            </span>
+            <span data-bind = "ifnot: loggedIn">
+            <ul class="navbar-right col-sm">
+                <!-- ENDIF -->
+
                 <li class="nav-item">
                     <a href="/login">Login</a>
                 </li>
                 <li class="nav-item">
-                    <a href="/signup">Sign Up</a>
+                    <a href="/register">Register</a>
                 </li>
-                <!--
-                {% endif %}
-                -->
-                
+
             </ul>
+            </span>
         </nav>
     </div>
 </div>
         
         <div class="view-wrapper" style="margin-top: 60px;">
-            
             <div class="container" style="">
-                <div class="row artist-page">
+                <div class="row edit-song-page">
+                    <form id="save-song" action="" method="post" onsubmit="return false;">
                     <div class="col-lg">
-                        <div class="artist">
-                            <h1 data-bind='text: name'></h1>
+                        <div class="edit-song">
+                            <h1>Edit Song</h1>
+                            <h2><span class="sub">Title</span></h2>
+                            <input name="title"
+                                   id="song-title"
+                                   type="text"
+                                   class="icon-ellipsis"
+                                   placeholder="Song Title"
+                                   data-bind="attr: { value: title }">
+                            <h2><span class="sub">Media Link</span></h2>
+                            <input name="media_link"
+                                   id="music-video"
+                                   type="text"
+                                   class="icon-ellipsis"
+                                   placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                                   data-bind="attr: { value: medialink }">
+                            <h2><span class="sub">Lyrics</span></h2>
+                            <textarea name="lyrics"
+                                      id="lyrics"
+                                      type="text"
+                                      class=""
+                                      placeholder="It was many and many a year ago, in a kingdom by the sea . . ." data-bind="text: lyrics"></textarea>
 
-                            <p data-bind='text: bio'></p>
-                            <a href="/edit-artist/?artist={{ artist['id'] }}">Edit</a>
-
-                            <a href="/add-album/?artist={{ artist['id'] }}">Add Album</a>
                             </div>
-                    </div> 
+                        </div>
 
-                    <span class="divider hide-mobile"></span>
                     <div class="col-sm">
-                        <div class="artist-meta">
-                            <div data-bind="if: members">
-                                <h5 class="label">Members</h5>
-
-                                <ul data-bind="foreach: members">
-                                    <li data-bind='text: name'></li>
-                                </ul>
-                            </div>
-                            
-                            <div data-bind="if: genre">
-                                <h5 class="label">Genre</h5>
-                                <p data-bind='text: genre'></p>
-                            </div>
-                            
-                            <!--div data-bind="if: country">
-                                <h5 class="label">Country</h5>
-                                <p data-bind='text: country'></p>
-                            </div-->
-                            
-                            <div data-bind="if: year">
-                                <h5 class="label">Year Formed</h5>
-                                <p data-bind='text: year'></p>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xl">
-                        <input type="search"
-                               onkeyup="filter(this)"
-                               name="filter-artist" 
-                               id="artist-filter-bar" 
-                               class="icon-search"
-                               placeholder="Filter Songs/Albums">
-                    </div>
-                </div>
-
-                {% for album in albums %}
-                <div class="row flip">
-                    <div class="album" id="album{{ album['id'] }}">
-                        <div class="col-sm">
-                            <img class="artwork" 
-                                 src="/static/uploads/{{ album['artwork'] }}">
+                        <div class="song-meta">
                             <div class="album-meta">
-                                <h3 class="title">{{ album['title'] }} <br/> <span class="sub">{{ artist['name'] }}</span></h3>
-                                {% if album['year']%}
-                                <h5>Year Released</h5>
-                                <p>{{ album['year'] }}</p>
-                                {% endif %}
-
-                                {% if album['genre']%}
-                                <h5>Genre</h5>
-                                <p>{{ album['genre'] }}</p>
-                                {% endif %}
-                                <a href="/edit-album/?album={{ album['id'] }}&artist={{ artist['id'] }}">Edit</a>
-                            </div>
-                        </div>
-                        <div class="col-lg">
-                            <div class="tracklist">
+                                <div class="fix-bottom">
+                                    <input name="save-song"
+                                       id="save-song"
+                                       type="submit"
+                                       class=""
+                                       value="Save">
+                                </div>
+                                <h2 class=""><span class="sub">Artist</span></h2>
+                                <p data-bind="text: name">--</p>
+                                <h2 class=""><span class="sub">Album</span></h2>
+                                <p data-bind="text: album_title"></p>
+                                <h2><span class="sub">Track Number</span></h2>
+                                <input name="track_number"
+                                       id="track-number"
+                                       type="number"
+                                       class="icon-no"
+                                       placeholder="#"
+                                       data-bind="attr: { value: track_no }">
+                                <!--h2><span class="sub">Composers</span></h2>
                                 <ul>
-                                    {% for track in album['tracklist'] %}
-                                    <li class="track"><a href="/song/?song={{ track['id'] }}">{{ track['track_no'] }}. {{ track['title'] }}</a></li>
-                                    {% endfor %}
-
-                                </ul>
+                                    <li>
+                                        <input name="composer-1"
+                                               id="composer-1"
+                                               type="text"
+                                               class="icon-1"
+                                               placeholder="Composer"
+                                               value="Composer Name">
+                                    </li>
+                                    <li>
+                                        <input name="new-composer"
+                                               id="new-composer"
+                                               type="text"
+                                               class="icon-plus"
+                                               placeholder="Add a Composer...">
+                                    </li>
+                                </ul-->
                             </div>
-                            <a href="/add-song/?album={{ album['id'] }}" class="btn outline">Add Song To Album</a>
                         </div>
                     </div>
+                    </form>
                 </div>
-                {% endfor %}
             </div>
+            <div class="container">
+                <div class="row">
+                    <footer class="">
+
+                        <div class="footer-left">
+                            <img src="/img/uv-logo-md.png">
+                        </div>
+                        <div class="footer-middle">
+                            <p>
+                                Copyright © 2015 UniVerse. All rights reserved.<br/>
+                                Designed and Developed by 
+                                <a href="http://davidleger.me" 
+                                   target="_blank">
+                                    David Leger</a> and Alex Storey.
+                            </p>
+                        </div>
+                        <div class="footer-right">
+                            <a href="/home">Home</a>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+
         </div>
         <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
         <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-3.3.0.js"></script>
         <script src="main.js"></script>
+        <script src="../js/ui.js"></script>
     </body>
 </html>

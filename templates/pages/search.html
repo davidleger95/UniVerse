@@ -5,44 +5,68 @@
     <div class="row">
         <h1>Search Results For: <span class="sub">"{{ search }}"</span></h1>
         {% if songs %}
-        <h3>Songs</h3>
+        <h2>Songs</h2>
         <ul class="songs">
             {% for song in songs %}
             <li>
-                <img class="album-art" src="{{song['artwork'] }}" alt="artwork">
+                <img class="album-art" src="/static/uploads/{{song['artwork'] }}" alt="artwork">
                 <div class="meta">
                     <h2 class="title">
                         <a href="/song/?song={{ song['id'] }}">{{ song['title'] }}</a><br />
                         <span class="sub">
-                            from <a href="#">{{ song['album'] }}</a>
-                            by <a href="#">{{ song['artist'] }}</a>
+                            from <a href="/artist/?artist={{ song['artist_id'] }}#{{ song['album_id'] }}">{{ song['album_title'] }}</a><br/>
+                            by <a href="/artist/?artist={{ song['artist_id'] }}">{{ song['artist_name'] }}</a>
                         </span>
                     </h2>
                     
                 </div>
             </li>
+            <hr>
             {% endfor %}
         </ul>
         {% endif %}
         
         {% if albums %}
-        <h3>Albums</h3>
+        <h2>Albums</h2>
         <ul>
             {% for album in albums %}
             <li>
-                <h2><a href="/artist/?artist={{ album['artist_id'] }}#album{{ album['id'] }}">{{ album['title'] }}</a></h2>
+                <img class="album-art" src="/static/uploads/{{ album['artwork'] }}" alt="artwork">
+                <div class="meta">
+                    <h2 class="title">
+                        <a href="/artist/?artist={{ album['artist_id'] }}#{{ album['id'] }}">{{ album['title'] }}</a><br />
+                        <span class="sub">
+                            by <a href="/artist/?artist={{ album['artist_id'] }}">{{ album['artist_name'] }}</a><br/>
+                            Genre <a href="/search/?search={{ album['genre'] }}">{{ album['genre'] }}</a>
+                            Year <a href="/search/?search={{ album['year'] }}">{{ album['year'] }}</a>
+                        </span>
+                    </h2>
+                    
+                </div>
             </li>
+            <hr>
             {% endfor %}
         </ul>
         {% endif %}
         
         {% if artists %}
-        <h3>Artists</h3>
+        <h2>Artists</h2>
         <ul>
             {% for artist in artists %}
             <li>
-                <h2><a href="/artist/?artist={{ artist['id'] }}">{{ artist['name'] }}</a></h2>
+                <img class="album-art" src="/static/uploads/{{ artist['artwork'] }}" alt="artwork">
+                <div class="meta">
+                    <h2 class="title">
+                        <a href="/artist/?artist={{ artist['id'] }}">{{ artist['name'] }}</a><br />
+                        <span class="sub">
+                            From <a href="/search/?search={{ artist['country'] }}">{{ artist['country'] }}</a><br/>
+                            Genre <a href="/search/?search={{ artist['genre'] }}">{{ artist['genre'] }}</a>
+                        </span>
+                    </h2>
+                    
+                </div>
             </li>
+            <hr>
             {% endfor %}
         </ul>
         {% endif %}

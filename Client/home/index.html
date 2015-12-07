@@ -30,38 +30,40 @@
                     </form>
                 </li>
             </ul>
-            <span data-bind = "if: loggedIn">
             <ul class="navbar-right col-sm">
-
-                <!-- if LOGGED_IN -->
+                
+                <!--
+                {% if session['logged_in'] %}
+                <!-- if LOGGED_IN ->
                 <li class="nav-item right">
                     <a href="#">
-                        <span id="username"></span>
-                        <img id="user-img" src="#">
+                        {{ session['username'] }}
+                        <img src="/static/uploads/{{ session['user_image'] }}">
                     </a>
                     <ul class="dropdown-menu">
                         <li class="dropdown-item">
                             <a href="/settings">Settings  ø</a>
                         </li>
                         <li class="dropdown-item dark">
-                            <a href="/login">Logout <</a>
+                            <a href="/logout">Logout <</a>
                         </li>
                     </ul>
                 </li>
-            </ul>
-            </span>
-            <span data-bind = "ifnot: loggedIn">
-            <ul class="navbar-right col-sm">
-
+                
+                <!-- ENDIF ->
+                {% else %} -->
+                
                 <li class="nav-item">
                     <a href="/login">Login</a>
                 </li>
                 <li class="nav-item">
-                    <a href="/register">Register</a>
+                    <a href="/signup">Sign Up</a>
                 </li>
-
+                <!--
+                {% endif %}
+                -->
+                
             </ul>
-            </span>
         </nav>
     </div>
 </div>
@@ -74,10 +76,10 @@
                         <div class="artist">
                             <h1 data-bind='text: name'></h1>
 
-                            <p data-bind='html: bio'></p>
-                            
-                            <a class="btn outline" style="width: calc(50% - 10px); float: left; margin-right: 18px;" data-bind = "attr: { href: '/edit-artist/?artist='+ artistid() }"> Edit Artist</a>
-                            <a class="btn" style="width: calc(50% - 10px); float: left;" data-bind = "attr: { href: '/add-album/?artist=' + artistid() }">Add Album</a>
+                            <p data-bind='text: bio'></p>
+                            <a href="/edit-artist/?artist={{ artist['id'] }}">Edit</a>
+
+                            <a href="/add-album/?artist={{ artist['id'] }}">Add Album</a>
                             </div>
                     </div> 
 
@@ -117,70 +119,48 @@
                                name="filter-artist" 
                                id="artist-filter-bar" 
                                class="icon-search"
-                               placeholder="Filter Songs">
+                               placeholder="Filter Songs/Albums">
                     </div>
                 </div>
 
-                 <div data-bind = "foreach: albums">
-                
-                    <div class="row flip">
-                        <div class="album" data-bind="attr: { id: 'album' + album_id }">
-                            <div class="col-sm">
-                                <img class="artwork" 
-                                     data-bind = "attr: { src: 'http://localhost:5000/static/uploads/' + artwork }">
-                                <div class="album-meta">
-                                    <h3 class="title"><span data-bind = "text: title"></span></h3>
-                                    
-                                    <h5>Year Released</h5>
-                                    <p><span data-bind = "text: year_released"></span></p>
-                                    
+                {% for album in albums %}
+                <div class="row flip">
+                    <div class="album" id="album{{ album['id'] }}">
+                        <div class="col-sm">
+                            <img class="artwork" 
+                                 src="/static/uploads/{{ album['artwork'] }}">
+                            <div class="album-meta">
+                                <h3 class="title">{{ album['title'] }} <br/> <span class="sub">{{ artist['name'] }}</span></h3>
+                                {% if album['year']%}
+                                <h5>Year Released</h5>
+                                <p>{{ album['year'] }}</p>
+                                {% endif %}
 
-                                    
-                                    <h5>Genre</h5>
-                                    <p><span data-bind = "text: genre"></span></p>
-                                    
-                                    <a class="btn outline" data-bind = "attr: { href: '/edit-album/?album='+ album_id +'&artist='+ artist_id }">Edit Album</a>
-                                </div>
+                                {% if album['genre']%}
+                                <h5>Genre</h5>
+                                <p>{{ album['genre'] }}</p>
+                                {% endif %}
+                                <a href="/edit-album/?album={{ album['id'] }}&artist={{ artist['id'] }}">Edit</a>
                             </div>
-                            <div class="col-lg">
-                                <div class="tracklist">
-                                    <ul data-bind="attr: { album_id: album_id}">
-                                         
+                        </div>
+                        <div class="col-lg">
+                            <div class="tracklist">
+                                <ul>
+                                    {% for track in album['tracklist'] %}
+                                    <li class="track"><a href="/song/?song={{ track['id'] }}">{{ track['track_no'] }}. {{ track['title'] }}</a></li>
+                                    {% endfor %}
 
-                                    </ul>
-                                </div>
-                                <a data-bind = "attr: { href: '/add-song/?album=' + album_id }" class="btn">Add Song To Album</a>
+                                </ul>
                             </div>
+                            <a href="/add-song/?album={{ album['id'] }}" class="btn outline">Add Song To Album</a>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <footer class="">
-
-                        <div class="footer-left">
-                            <img src="/img/uv-logo-md.png">
-                        </div>
-                        <div class="footer-middle">
-                            <p>
-                                Copyright © 2015 UniVerse. All rights reserved.<br/>
-                                Designed and Developed by 
-                                <a href="http://davidleger.me" 
-                                   target="_blank">
-                                    David Leger</a> and Alex Storey.
-                            </p>
-                        </div>
-                        <div class="footer-right">
-                            <a href="/home">Home</a>
-                        </div>
-                    </footer>
-                </div>
+                {% endfor %}
             </div>
         </div>
         <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
         <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-3.3.0.js"></script>
         <script src="main.js"></script>
-        <script src="../js/ui.js"></script>
     </body>
 </html>

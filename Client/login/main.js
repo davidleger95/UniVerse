@@ -1,33 +1,67 @@
+localStorage.clear();
+
+var userdata = { 'logged_in': false };
+
+//TODO remove this block when done everything
+if(JSON.parse(localStorage.getItem("userdata")) != null){
+	userdata = JSON.parse(localStorage.getItem("userdata"));
+	
+	$('#username').text(userdata['username']);
+    $('#user-img').attr("src", "http://localhost:5000/static/uploads/" + userdata['image_url']);
+}
+
 // Here's my data model
 var ViewModel = function() {
     
-    var artist = 1;
-    
     var self = this;
-
-    //self.data = ko.observableArray();
-    self.name = ko.observable();
-    self.bio = ko.observable();
-    self.genre = ko.observable();
-    self.year = ko.observable();
-    self.members = ko.observableArray();
+    // USER VARS
     
-    $.ajax({
-        type: "GET",
-        url: "http://localhost:5000/2",
-        dataType: 'json',
-        success: function(result){
-            console.log(result.artist.biography);
-            self.name(result.artist.name);
-            self.bio(result.artist.biography);
-            self.genre(result.artist.genre);
-            self.year(result.artist.year_formed);
-            self.members(result.artist.members);
-        },
-        error: function(result){
-            console.log(result);
-            alert("Error");
-        }
+    self.loggedIn = ko.observable(userdata['logged_in']);
+    self.username = ko.observable(userdata['username']);
+    console.log(userdata['username']);
+    //---------------------------
+    
+    self.username = ko.observable();
+    self.password = ko.observable();
+    self.userdata = {}
+
+    $("#login-form").on("submit", function(e){
+        
+        //e.preventDefault();
+        
+        self.userdata.username = self.username;
+        self.userdata.password = self.password;
+        var queryData = ko.toJSON(self.userdata);
+        console.log(queryData);
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:5000/login/",
+            dataType: 'json',
+            contentType: 'json',
+            data: queryData,
+
+
+            success: function(result){
+				console.log("hello");
+                if (!result.userdata){
+                    alert("Authentification failure. Please check credentials");
+                }
+
+                else{
+                    alert("Success");
+                    console.log(result);
+                    console.log(result.userdata);
+                    localStorage.setItem("userdata", JSON.stringify(result.userdata));
+                     window.location.href = "/home";
+                }
+                
+            },
+            
+            error: function(result){
+                console.log(result);
+                alert("Error");
+            }
+        });
     });
  
 };

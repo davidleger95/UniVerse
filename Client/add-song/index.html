@@ -7,7 +7,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
         <link xmlns="http://www.w3.org/1999/xhtml" rel="shortcut icon" type="image/png" href="/assets/img/badge-sm.png"/>
-        <title data-bind='text: title'>UniVerse | Song</title>
+        <title data-bind='text: title'>UniVerse | Add Song</title>
         <link rel= "stylesheet" type= "text/css" href= "/css/main.css">
     </head>
     <body>
@@ -69,53 +69,75 @@
         
         <div class="view-wrapper" style="margin-top: 60px;">
             <div class="container" style="">
-                <div class="row song-page">
+                <div class="row edit-song-page">
+                    <form id="save-song" action="" method="post" onsubmit="return false;">
                     <div class="col-lg">
-                        <div class="song">
-                            <h1 data-bind = "text: curr_title"> </h1>
-                             
-                            <span data-bind = "if: medialink"><iframe src="https://www.youtube.com/embed/{{ song['media_link'] }}?rel=0&amp;showinfo=0"
-                                    width="100%" 
-                                    height="300px"  
-                                    frameborder="0" 
-                                    allowfullscreen></iframe>
-                            </span>
+                        <div class="edit-song">
+                            <h1>Edit Song</h1>
+                            <h2><span class="sub">Title</span></h2>
+                            <input name="title"
+                                   id="song-title"
+                                   type="text"
+                                   class="icon-ellipsis"
+                                   placeholder="Song Title">
+                            <h2><span class="sub">Media Link</span></h2>
+                            <input name="media_link"
+                                   id="music-video"
+                                   type="text"
+                                   class="icon-ellipsis"
+                                   placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+                            <h2><span class="sub">Lyrics</span></h2>
+                            <textarea name="lyrics"
+                                      id="lyrics"
+                                      type="text"
+                                      class=""
+                                      placeholder="It was many and many a year ago, in a kingdom by the sea . . ."></textarea>
 
-                            <p data-bind="html: lyrics">
-                                
-                            </p>
-                            <a class="btn outline" data-bind = "attr: {href:'/edit-song/?song=' + curr_track_id()}">Edit Lyrics</a>
                             </div>
                         </div>
-                    <span class="divider hide-mobile"></span>
+
                     <div class="col-sm">
-                        <div class="album">
-                            <img class="artwork" 
-                                 data-bind = "attr: {src:'http://localhost:5000/static/uploads/' + artwork()}" >
+                        <div class="song-meta">
                             <div class="album-meta">
-                                <h3 class="title"><a data-bind = "attr: { href: '/artist/?artist=' + artist_id() + '#album' + album_id() }, text: album_title"></a> <br/> <span class="sub"><a data-bind="attr: {href: '/artist/?artist=' + artist_id() }, text: name"></a></span></h3>
-                                <span data-bind="if: year">
-                                <h5>Year Released</h5>
-                                <p data-bind="text: year">--</p>
-                                </span>
-
-                                <span data-bind="if: genre">
-                                <h5>Genre</h5>
-                                <p data-bind="text: genre">--</p>
-                                </span>
-                                <a class="btn outline" data-bind="attr: {href: '/edit-album/?album=' + album_id() + '&artist=' + artist_id()}">Edit Album</a>
-
-                            </div>
-                            <div class="tracklist">
-                                <h4>Tracklist</h4>
-                                <ul data-bind="foreach: tracklist">
-                                    <li class="track"><a data-bind="attr: { href : '?artist=' + artist_id + '&album='+ album_id +'&song=' + track_id }, text: track_no + '. ' + title"></a></li>
-                                    
-                                </ul>
-                                <a data-bind="attr: {href: '/add-song/?album=' + album_id() }" class="btn outline">Add Song To Album</a>
+                                <div class="fix-bottom">
+                                    <input name="save-song"
+                                       id="save-song"
+                                       type="submit"
+                                       class=""
+                                       value="Save">
+                                </div>
+                                <h2 class=""><span class="sub">Artist</span></h2>
+                                <p data-bind="text: name">--</p>
+                                <h2 class=""><span class="sub">Album</span></h2>
+                                <p data-bind="text: title"></p>
+                                <h2><span class="sub">Track Number</span></h2>
+                                <input name="track_number"
+                                       id="track-number"
+                                       type="number"
+                                       class="icon-no"
+                                       placeholder="#">
+                                <!--h2><span class="sub">Composers</span></h2>
+                                <ul>
+                                    <li>
+                                        <input name="composer-1"
+                                               id="composer-1"
+                                               type="text"
+                                               class="icon-1"
+                                               placeholder="Composer"
+                                               value="Composer Name">
+                                    </li>
+                                    <li>
+                                        <input name="new-composer"
+                                               id="new-composer"
+                                               type="text"
+                                               class="icon-plus"
+                                               placeholder="Add a Composer...">
+                                    </li>
+                                </ul-->
                             </div>
                         </div>
                     </div>
+                    </form>
                 </div>
             </div>
             <div class="container">

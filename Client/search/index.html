@@ -7,160 +7,170 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
         <link xmlns="http://www.w3.org/1999/xhtml" rel="shortcut icon" type="image/png" href="/assets/img/badge-sm.png"/>
-        <title>UniVerse | {{ title }}</title>
+        <title data-bind='text: name'>UniVerse | Search</title>
         <link rel= "stylesheet" type= "text/css" href= "/css/main.css">
     </head>
     <body>
         <div class="navbar-wrapper">
-    <div class="container">
-        <nav class="navbar">
-            <ul class="navbar-left col-lg">
-                <li>
-                    <a href="/" class="brand"></a>
-                </li>
-                <li class="navbar-search">
-                    <form action="/search/" method="get">
-                    
-                    <input type="search" 
-                           name="search" 
-                           id="search-bar" 
-                           class="icon-search"
-                           placeholder="Search UniVerse">
-                        
-                    </form>
-                </li>
-            </ul>
-            <ul class="navbar-right col-sm">
-                
-                <!--
-                {% if session['logged_in'] %}
-                <!-- if LOGGED_IN ->
-                <li class="nav-item right">
-                    <a href="#">
-                        {{ session['username'] }}
-                        <img src="/static/uploads/{{ session['user_image'] }}">
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li class="dropdown-item">
-                            <a href="/settings">Settings  ø</a>
+            <div class="container">
+                <nav class="navbar">
+                    <ul class="navbar-left col-lg">
+                        <li>
+                            <a href="/" class="brand"></a>
                         </li>
-                        <li class="dropdown-item dark">
-                            <a href="/logout">Logout <</a>
+                        <li class="navbar-search">
+                            <form action="/search/" method="get">
+
+                            <input type="search" 
+                                   name="search" 
+                                   id="search-bar" 
+                                   class="icon-search"
+                                   placeholder="Search UniVerse">
+
+                            </form>
                         </li>
                     </ul>
-                </li>
-                
-                <!-- ENDIF ->
-                {% else %} -->
-                
-                <li class="nav-item">
-                    <a href="/login">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/signup">Sign Up</a>
-                </li>
-                <!--
-                {% endif %}
-                -->
-                
-            </ul>
-        </nav>
-    </div>
-</div>
+                    <span data-bind = "if: loggedIn">
+                    <ul class="navbar-right col-sm" >
+
+                        <!-- if LOGGED_IN -->
+                        <li class="nav-item right">
+                            <a href="#">
+                                <span id="username"></span>
+                                <img id="user-img" src="#">
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item">
+                                    <a href="/settings">Settings  ø</a>
+                                </li>
+                                <li class="dropdown-item dark">
+                                    <a href="/login">Logout <</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    </span>
+                    <span data-bind = "ifnot: loggedIn">
+                    <ul class="navbar-right col-sm">
+                        <li class="nav-item">
+                            <a href="/login">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/register">Register</a>
+                        </li>
+                    </ul>
+                    </span>
+                </nav>
+            </div>
+        </div>
         
         <div class="view-wrapper" style="margin-top: 60px;">
             
-            <div class="container" style="">
-                <div class="row artist-page">
-                    <div class="col-lg">
-                        <div class="artist">
-                            <h1 data-bind='text: name'></h1>
-
-                            <p data-bind='text: bio'></p>
-                            <a href="/edit-artist/?artist={{ artist['id'] }}">Edit</a>
-
-                            <a href="/add-album/?artist={{ artist['id'] }}">Add Album</a>
-                            </div>
-                    </div> 
-
-                    <span class="divider hide-mobile"></span>
-                    <div class="col-sm">
-                        <div class="artist-meta">
-                            <div data-bind="if: members">
-                                <h5 class="label">Members</h5>
-
-                                <ul data-bind="foreach: members">
-                                    <li data-bind='text: name'></li>
-                                </ul>
-                            </div>
-                            
-                            <div data-bind="if: genre">
-                                <h5 class="label">Genre</h5>
-                                <p data-bind='text: genre'></p>
-                            </div>
-                            
-                            <!--div data-bind="if: country">
-                                <h5 class="label">Country</h5>
-                                <p data-bind='text: country'></p>
-                            </div-->
-                            
-                            <div data-bind="if: year">
-                                <h5 class="label">Year Formed</h5>
-                                <p data-bind='text: year'></p>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
+            <div class="container search-results" style="">
                 <div class="row">
-                    <div class="col-xl">
-                        <input type="search"
-                               onkeyup="filter(this)"
-                               name="filter-artist" 
-                               id="artist-filter-bar" 
-                               class="icon-search"
-                               placeholder="Filter Songs/Albums">
-                    </div>
-                </div>
+                    <h1>Search Results For: <span class="sub" data-bind="text: '\'' + query() + '\''"></span></h1>
+                    <span data-bind="if: songs().length > 0">
+                    <h2>Songs</h2>
+                    <ul class="songs" data-bind="foreach: songs">
+                        <li>
+                            <img class="album-art" 
+                                 data-bind="attr: { src: 'http://localhost:5000/static/uploads/' + artwork }"
+                                 alt="artwork">
+                            <div class="meta">
+                                <h2 class="title">
+                                    <a data-bind="attr: { href: '/song/?artist=' + artist_id + '&album=' + album_id + '&song=' + track_id }, text: title"></a><br />
+                                    <span class="sub">
+                                        from <a data-bind="attr: { href: '/artist/?artist=' + artist_id + '#album' }, text: $data['a.title']"></a><br/>
+                                        by <a data-bind="attr: { href: '/artist/?artist=' + artist_id}, text: name"></a>
+                                    </span>
+                                </h2>
 
-                {% for album in albums %}
-                <div class="row flip">
-                    <div class="album" id="album{{ album['id'] }}">
-                        <div class="col-sm">
-                            <img class="artwork" 
-                                 src="/static/uploads/{{ album['artwork'] }}">
-                            <div class="album-meta">
-                                <h3 class="title">{{ album['title'] }} <br/> <span class="sub">{{ artist['name'] }}</span></h3>
-                                {% if album['year']%}
-                                <h5>Year Released</h5>
-                                <p>{{ album['year'] }}</p>
-                                {% endif %}
-
-                                {% if album['genre']%}
-                                <h5>Genre</h5>
-                                <p>{{ album['genre'] }}</p>
-                                {% endif %}
-                                <a href="/edit-album/?album={{ album['id'] }}&artist={{ artist['id'] }}">Edit</a>
                             </div>
-                        </div>
-                        <div class="col-lg">
-                            <div class="tracklist">
-                                <ul>
-                                    {% for track in album['tracklist'] %}
-                                    <li class="track"><a href="/song/?song={{ track['id'] }}">{{ track['track_no'] }}. {{ track['title'] }}</a></li>
-                                    {% endfor %}
+                        </li>
+                        <hr>
+                    </ul>
+                    </span>
 
-                                </ul>
+                    <span data-bind="if: albums().length > 0">
+                    <h2>Albums</h2>
+                    <ul data-bind="foreach: albums">
+                        <li>
+                            <img class="album-art" 
+                                 data-bind="attr: { src: 'http://localhost:5000/static/uploads/' + artwork }"
+                                 alt="artwork">
+                            <div class="meta">
+                                <h2 class="title">
+                                    <a data-bind="attr: { href: '/artist/?artist=' + artist_id + '#album' }, text: title"></a><br />
+                                    <span class="sub">
+                                        by <a data-bind="attr: { href: '/artist/?artist=' + artist_id }, text: name"></a><br/>
+                                        <span data-bind="if: genre">
+                                            Genre <a data-bind="attr: { href: '/search/?search=' + genre}, text: genre">--</a></span>
+                                        <span data-bind="if: year_released">
+                                            Year <a data-bind="attr: { href: '/search/?search=' + year_released }, text: year_released">--</a>
+                                        </span>
+                                    </span>
+                                </h2>
+
                             </div>
-                            <a href="/add-song/?album={{ album['id'] }}" class="btn outline">Add Song To Album</a>
-                        </div>
-                    </div>
+                        </li>
+                        <hr>
+                    </ul>
+                    </span>
+
+                    <span data-bind="if: artists().length > 0">
+                    <h2>Artists</h2>
+                    <ul data-bind="foreach: artists">
+                        
+                        <li>
+                            <img class="album-art" 
+                                 data-bind="attr: { src: 'http://localhost:5000/static/uploads/' + artwork }"
+                                 alt="artwork">
+                            <div class="meta">
+                                <h2 class="title">
+                                    <a data-bind="attr: { href: '/artist/?artist=' + artist_id }, text: name"></a><br />
+                                    <span class="sub">
+                                        <span data-bind="if: country">
+                                        From <a data-bind="attr: { href: '/search/?search=' + country}, text: country">--</a><br/>
+                                        <span data-bind="if: genre">
+                                            Genre <a data-bind="attr: { href: '/search/?search=' + genre}, text: genre">--</a></span>
+                                    </span>
+                                </h2>
+
+                            </div>
+                        </li>
+                        <hr>
+                    </ul>
+                    </span>
+
                 </div>
-                {% endfor %}
+            </div>
+            
+            <div class="container">
+                <div class="row">
+                    <footer class="">
+
+                        <div class="footer-left">
+                            <img src="/img/uv-logo-md.png">
+                        </div>
+                        <div class="footer-middle">
+                            <p>
+                                Copyright © 2015 UniVerse. All rights reserved.<br/>
+                                Designed and Developed by 
+                                <a href="http://davidleger.me" 
+                                   target="_blank">
+                                    David Leger</a> and Alex Storey.
+                            </p>
+                        </div>
+                        <div class="footer-right">
+                            <a href="/home">Home</a>
+                        </div>
+                    </footer>
+                </div>
             </div>
         </div>
         <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
         <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-3.3.0.js"></script>
         <script src="main.js"></script>
+        <script src="../js/ui.js"></script>
     </body>
 </html>
