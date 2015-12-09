@@ -16,7 +16,7 @@
                 <nav class="navbar">
                     <ul class="navbar-left col-lg">
                         <li>
-                            <a href="/" class="brand"></a>
+                            <a href="/home" class="brand"></a>
                         </li>
                         <li class="navbar-search">
                             <form action="/search/" method="get">
@@ -32,7 +32,9 @@
                     </ul>
                     <span data-bind = "if: loggedIn">
                     <ul class="navbar-right col-sm" >
-
+                        <li class="nav-item">
+                            <a href="/add-artist">+ Add Artist</a>
+                        </li>
                         <!-- if LOGGED_IN -->
                         <li class="nav-item right">
                             <a href="#">

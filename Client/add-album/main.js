@@ -30,10 +30,6 @@ var ViewModel = function() {
     
     self.name = ko.observable();
     self.artist_id = ko.observable();
-    self.bio = ko.observable();
-    self.genre = ko.observable();
-    self.year = ko.observable();
-    self.country = ko.observable();
     
     $.ajax({
         type: "GET",
@@ -42,10 +38,6 @@ var ViewModel = function() {
         success: function(result){
             self.artist_id(result.artist.artist_id);
             self.name(result.artist.name);
-            self.bio(result.artist.biography);
-            self.genre(result.artist.genre);
-            self.year(result.artist.year_formed);
-            self.country(result.artist.country);
         },
         
         error: function(result){
@@ -54,12 +46,12 @@ var ViewModel = function() {
         }
     });
     
-    $("#save-artist").on("submit", function(e){
+    $("#save-album").on("submit", function(e){
         
         var queryData = $.extend({}, userdata, self);
         
         var jsonData = queryData;
-         var data = $("#save-artist").serializeArray();
+         var data = $("#save-album").serializeArray();
         for(i = 0; i<data.length; i++){
                jsonData[data[i].name] = data[i].value;
          };
@@ -69,7 +61,7 @@ var ViewModel = function() {
         console.log(queryData);
         var resource = "http://localhost:5000/" + self.artist_id() + "/";
         $.ajax({
-            type: "POST",
+            type: "PUT",
             url: resource,
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
@@ -77,6 +69,7 @@ var ViewModel = function() {
 
 
             success: function(result){
+				console.log("hello");
                 if (result.error){
                     alert("Error: " + result.message);
                 }

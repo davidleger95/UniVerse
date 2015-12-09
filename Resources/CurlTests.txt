@@ -1,0 +1,326 @@
+LOGIN:
+curl -H "Content-Type: application/json" -X POST -d '{"username":"alex","password":"aaaaaaaa"}' http://localhost:5000/login/
+
+RESPONSE:
+{
+  "userdata": {
+    "active": 0, 
+    "email": "astorey@unb.ca", 
+    "fname": null, 
+    "image_url": null, 
+    "lname": null, 
+    "logged_in": true, 
+    "password": "aaaaaaaa", 
+    "user_id": 9, 
+    "user_type": 1, 
+    "username": "alex"
+  }
+}
+
+REGISTER:
+curl -H "Content-Type: application/json" -X PUT -d '{"username":"test3","password":"1111","confirmPassword":"1111","email":"test@test.test"}' http://localhost:5000/register/
+
+RESPONSE:
+{
+  "message": "You are now registered!", 
+  "userdata": true
+}
+
+UPDATE SONG:
+
+curl -H "Content-Type: application/json" -X POST -d '{"username":"alex","password":"aaaaaaaa","title":"Killing in the name of","media_link":"youtube.com", "track_number": 12, "lyrics":"now you do what they told ya"}' http://localhost:5000/5/14/47/
+
+
+RESPONSE:
+{
+  "error": false, 
+  "message": "Save successful!"
+}
+
+ADD SONG:
+
+curl -H "Content-Type: application/json" -X PUT -d '{"username":"test3","password":"1111","title":"Wake Up","lyrics":"Waaaaake Up", "track_number":6, "media_link":" "}' http://localhost:5000/5/14/
+
+RESPONSE:
+
+{
+  "error": false, 
+  "message": "Song added!", 
+  "track_id": 65
+}
+
+ADD ARTIST:
+curl -H "Content-Type: application/json" -X PUT -d '{"username":"alex","password":"aaaaaaaa","name":"Seether","bio":"They're South African", "genre":"Rock", "country":"South Africa", "year": 2002}' http://localhost:5000/
+RESPONSE:
+
+UPDATE ARTIST:
+curl -H "Content-Type: application/json" -X POST -d '{"username":"alex","password":"aaaaaaaa","name":"Rage Against The Machine1","genre":"rap-metal", "year": 1992, "bio":"they r a band", "country": "USofA"}' http://localhost:5000/5/
+
+RESPONSE:
+{
+  "error": false, 
+  "message": "Updated artist!"
+}
+
+ADD ALBUM:
+curl -H "Content-Type: application/json" -X PUT -d '{"username":"alex","password":"aaaaaaaa","title":"Battle of LA","genre":"rap metal", "year": 2003}' http://localhost:5000/5/
+
+RESPONSE:
+{
+  "error": false, 
+  "message": "Album added!"
+}
+
+UPDATE ALBUM:
+curl -H "Content-Type: application/json" -X POST -d '{"username":"alex","password":"aaaaaaaa","title":"Rage Against The Machine1","genre":"rap-metal", "year": 1998}' http://localhost:5000/5/14/
+
+RESPONSE:
+
+{
+  "error": false, 
+  "message": "Album Updated!"
+}
+
+GET SONG
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:5000/5/14/46/
+
+RESPONSE:
+
+HTTP/1.0 200 OK
+Content-Type: application/json
+Content-Length: 4320
+Server: Werkzeug/0.11.2 Python/2.7.10
+Date: Tue, 08 Dec 2015 01:48:52 GMT
+
+{
+  "track": {
+    "album": [
+      {
+        "a.title": "Rage Against The Machine1", 
+        "album_id": 14, 
+        "artist_id": 5, 
+        "artwork": "album_img14.jpg", 
+        "genre": "rap-metal", 
+        "name": "Rage Against The Machine1", 
+        "title": "Bombtrack", 
+        "track_id": 46, 
+        "track_no": 1, 
+        "year_released": 1998
+      }, 
+      {
+        "a.title": "Rage Against The Machine1", 
+        "album_id": 14, 
+        "artist_id": 5, 
+        "artwork": "album_img14.jpg", 
+        "genre": "rap-metal", 
+        "name": "Rage Against The Machine1", 
+        "title": "Take The Power Back", 
+        "track_id": 48, 
+        "track_no": 3, 
+        "year_released": 1998
+      }, 
+      {
+        "a.title": "Rage Against The Machine1", 
+        "album_id": 14, 
+        "artist_id": 5, 
+        "artwork": "album_img14.jpg", 
+        "genre": "rap-metal", 
+        "name": "Rage Against The Machine1", 
+        "title": "Bullet In The Head", 
+        "track_id": 49, 
+        "track_no": 5, 
+        "year_released": 1998
+      }, 
+      {
+        "a.title": "Rage Against The Machine1", 
+        "album_id": 14, 
+        "artist_id": 5, 
+        "artwork": "album_img14.jpg", 
+        "genre": "rap-metal", 
+        "name": "Rage Against The Machine1", 
+        "title": "Know You Enemy", 
+        "track_id": 54, 
+        "track_no": 6, 
+        "year_released": 1998
+      }, 
+      {
+        "a.title": "Rage Against The Machine1", 
+        "album_id": 14, 
+        "artist_id": 5, 
+        "artwork": "album_img14.jpg", 
+        "genre": "rap-metal", 
+        "name": "Rage Against The Machine1", 
+        "title": "Wake Up", 
+        "track_id": 65, 
+        "track_no": 6, 
+        "year_released": 1998
+      }, 
+      {
+        "a.title": "Rage Against The Machine1", 
+        "album_id": 14, 
+        "artist_id": 5, 
+        "artwork": "album_img14.jpg", 
+        "genre": "rap-metal", 
+        "name": "Rage Against The Machine1", 
+        "title": "Killing in the name of", 
+        "track_id": 47, 
+        "track_no": 12, 
+        "year_released": 1998
+      }
+    ], 
+    "album_id": 14, 
+    "lyrics": "Ughh! \r\nHey yo, it's just another bombtrack...ughh!\r\nHey yo, it's just another bombtrack...yeah!\r\nIt goes a-1, 2, 3... \r\n\r\nHey yo, it's just another bombtrack\r\nAnd suckas be thinkin' that they can fade this\r\nBut I'm gonna drop it at a higher level\r\n'Cause I'm inclined to stoop down\r\nHand out some beat-downs\r\nCold runna train on punk ho's that\r\nThink they run the game\r\n\r\nBut I learned to burn that bridge and delete\r\nThose who compete...at a level that's obsolete\r\nInstead I warm my hands upon the flames of the flag\r\nAs I recall our downfall\r\nAnd the business that burned us all\r\nSee through the news and the views that twist reality\r\n\r\nEnough\r\nI call the bluff\r\nFuck Manifest destiny\r\n\r\nLandlords and power whores\r\nOn my people they took turns\r\nDispute the suits I ignite\r\nAnd then watch 'em burn\r\n\r\nWith the thoughts from a militant mind\r\nHardline, hardline after hardline\r\n\r\nLandlords and power whores\r\nOn my people they took turns\r\nDispute the suits I ignite\r\nAnd then watch 'em burn\r\n\r\nBurn, burn, yes ya gonna burn\r\nBurn, burn, yes ya gonna burn\r\nBurn, burn, yes ya gonna burn\r\nBurn, burn, yes ya gonna burn\r\n\r\nBurn, burn, yes ya gonna burn\r\nBurn, burn, yes ya gonna burn\r\nBurn, burn, yes ya gonna burn\r\nBurn, burn, yes ya gonna burn\r\n\r\nIt goes a-1, 2, 3\r\nAnother funky radical bombtrack\r\nStarted as a sketch in my notebook\r\nAnd now dope hooks make punks take another look\r\nMy thoughts ya hear and ya begin to fear\r\nThat ya card will get pulled if ya interfere\r\n\r\nWith the thoughts from a militant mind\r\nHardline, hardline after hardline\r\n\r\nLandlords and power whores\r\nOn my people they took turns\r\nDispute the suits I ignite\r\nAnd then watch 'em burn\r\n\r\nBurn, burn, yes ya gonna burn\r\nBurn, burn, yes ya gonna burn\r\nBurn, burn, yes ya gonna burn\r\nBurn, burn, yes ya gonna burn\r\nBurn, burn, yes ya gonna burn\r\nBurn, burn, yes ya gonna burn\r\nBurn, burn, yes ya gonna burn\r\nBurn, burn, yes ya gonna burn\r\nBurn!", 
+    "media_link": "", 
+    "title": "Bombtrack", 
+    "track_id": 46, 
+    "track_no": 1
+  }
+}
+GET ALBUM
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:5000/album/14/
+
+RESPONSE:
+
+HTTP/1.0 200 OK
+Content-Type: application/json
+Content-Length: 872
+Server: Werkzeug/0.11.2 Python/2.7.10
+Date: Tue, 08 Dec 2015 01:47:05 GMT
+
+{
+  "album": {
+    "album_id": 14, 
+    "artist_id": 5, 
+    "artwork": "album_img14.jpg", 
+    "genre": "rap-metal", 
+    "name": "Rage Against The Machine1", 
+    "title": "Rage Against The Machine1", 
+    "tracklist": [
+      {
+        "title": "Bombtrack", 
+        "track_id": 46, 
+        "track_no": 1
+      }, 
+      {
+        "title": "Take The Power Back", 
+        "track_id": 48, 
+        "track_no": 3
+      }, 
+      {
+        "title": "Bullet In The Head", 
+        "track_id": 49, 
+        "track_no": 5
+      }, 
+      {
+        "title": "Know You Enemy", 
+        "track_id": 54, 
+        "track_no": 6
+      }, 
+      {
+        "title": "Wake Up", 
+        "track_id": 65, 
+        "track_no": 6
+      }, 
+      {
+        "title": "Killing in the name of", 
+        "track_id": 47, 
+        "track_no": 12
+      }
+    ], 
+    "year_released": 1998
+  }
+}
+
+GET ARTIST
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:5000/5/
+
+RESPONSE:
+HTTP/1.0 200 OK
+Content-Type: application/json
+Content-Length: 1868
+Server: Werkzeug/0.11.2 Python/2.7.10
+Date: Tue, 08 Dec 2015 01:48:08 GMT
+
+{
+  "artist": {
+    "albums": [
+      {
+        "album_id": 20, 
+        "artist_id": 5, 
+        "artwork": null, 
+        "genre": "rap metal", 
+        "title": "Battle of LA", 
+        "tracklist": [], 
+        "year_released": 2003
+      }, 
+      {
+        "album_id": 14, 
+        "artist_id": 5, 
+        "artwork": "album_img14.jpg", 
+        "genre": "rap-metal", 
+        "title": "Rage Against The Machine1", 
+        "tracklist": [
+          {
+            "title": "Bombtrack", 
+            "track_id": 46, 
+            "track_no": 1
+          }, 
+          {
+            "title": "Take The Power Back", 
+            "track_id": 48, 
+            "track_no": 3
+          }, 
+          {
+            "title": "Bullet In The Head", 
+            "track_id": 49, 
+            "track_no": 5
+          }, 
+          {
+            "title": "Know You Enemy", 
+            "track_id": 54, 
+            "track_no": 6
+          }, 
+          {
+            "title": "Wake Up", 
+            "track_id": 65, 
+            "track_no": 6
+          }, 
+          {
+            "title": "Killing in the name of", 
+            "track_id": 47, 
+            "track_no": 12
+          }
+        ], 
+        "year_released": 1998
+      }, 
+      {
+        "album_id": 17, 
+        "artist_id": 5, 
+        "artwork": "album_img17.jpg", 
+        "genre": "Rap Rock", 
+        "title": "Evil Empire", 
+        "tracklist": [
+          {
+            "title": "Bulls On Parade", 
+            "track_id": 64, 
+            "track_no": 2
+          }
+        ], 
+        "year_released": 1996
+      }
+    ], 
+    "artist_id": 5, 
+    "biography": "they r a band", 
+    "country": "USofA", 
+    "genre": "rap-metal", 
+    "members": [
+      {
+        "name": "Tom Morello", 
+        "role": "Guitar/DJ"
+      }
+    ], 
+    "name": "Rage Against The Machine1", 
+    "year_formed": 1992
+  }
+}
+

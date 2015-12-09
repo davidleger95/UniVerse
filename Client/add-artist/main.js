@@ -28,32 +28,8 @@ var ViewModel = function() {
     
     self.loggedIn = ko.observable(userdata['logged_in']);
     
-    self.name = ko.observable();
-    self.artist_id = ko.observable();
-    self.bio = ko.observable();
-    self.genre = ko.observable();
-    self.year = ko.observable();
-    self.country = ko.observable();
     
-    $.ajax({
-        type: "GET",
-        url: url,
-        dataType: 'json',
-        success: function(result){
-            self.artist_id(result.artist.artist_id);
-            self.name(result.artist.name);
-            self.bio(result.artist.biography);
-            self.genre(result.artist.genre);
-            self.year(result.artist.year_formed);
-            self.country(result.artist.country);
-        },
-        
-        error: function(result){
-            console.log(result);
-            alert("Error");
-        }
-    });
-    
+ 
     $("#save-artist").on("submit", function(e){
         
         var queryData = $.extend({}, userdata, self);
@@ -67,9 +43,10 @@ var ViewModel = function() {
         console.log(ko.toJSON(jsonData));
         
         console.log(queryData);
-        var resource = "http://localhost:5000/" + self.artist_id() + "/";
+        var resource = "http://localhost:5000/";
+        
         $.ajax({
-            type: "POST",
+            type: "PUT",
             url: resource,
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
@@ -83,8 +60,7 @@ var ViewModel = function() {
 
                 else{
                     alert("Success: " + result.message);
-                     window.location.href = "/artist/?artist=" + self.artist_id();
-                    console.log(result)
+                     window.location.href = "/artist/?artist=" + result.artist_id;
                 }
                 
             },

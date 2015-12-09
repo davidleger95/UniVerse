@@ -7,7 +7,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
         <link xmlns="http://www.w3.org/1999/xhtml" rel="shortcut icon" type="image/png" href="/assets/img/badge-sm.png"/>
-        <title data-bind='text: title'>UniVerse | Add Song</title>
+        <title data-bind='text: title'>UniVerse | Add Album</title>
         <link rel= "stylesheet" type= "text/css" href= "/css/main.css">
     </head>
     <body>
@@ -75,32 +75,25 @@
                     <form id="save-album" action="" method="post" enctype="multipart/form-data" onsubmit="return false;">
                     <div class="col-lg">
                         <div class="edit-album">
-                            <h1>Edit Album</h1>
+                            <h1>Add Album</h1>
                             <h2><span class="sub">Title</span></h2>
                             <input name="title"
                                    id="album-title"
                                    type="text"
                                    class="icon-ellipsis"
-                                   placeholder="Album Title"
-                                   data-bind="attr: {value: title}">
+                                   placeholder="Album Title">
                             <h2><span class="sub">Year Released</span></h2>
                             <input name="year"
                                    id="album-year"
                                    type="number"
                                    class="icon-ellipsis"
-                                   placeholder="When Did This Album Come Out?"
-                                   data-bind="attr: {value: year}">
+                                   placeholder="When Did This Album Come Out?">
                             <h2><span class="sub">Genre</span></h2>
                             <input name="genre"
                                    id="album-genre"
                                    type="text"
                                    class="icon-eighth"
-                                   placeholder="Album Genre"
-                                   data-bind="attr: {value: genre}">
-                            <a data-bind="attr: {href: '/add-song/?artist=' + artist_id() + '&album=' + album_id() }"
-                               name="add-song"
-                               id="add-song"
-                               class="btn outline">Add A Song</a>
+                                   placeholder="Album Genre">
                             </div>
                         </div>
 
@@ -119,8 +112,7 @@
 
                                 <h2><span class="sub">Artwork</span></h2>
                                 <img id="album-artwork-preview"
-                                     class="artwork" 
-                                     data-bind="attr: {src: 'http://localhost:5000/static/uploads/' + artwork() }">
+                                     class="artwork">
                                 <input name="artwork"
                                        id="album-artwork"
                                        type="file"

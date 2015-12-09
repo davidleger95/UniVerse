@@ -7,10 +7,9 @@
 import os
 
 # import Flask dependancies
-from flask import Flask, render_template, flash, request, url_for, redirect, session, jsonify
+from flask import Flask, request, url_for, redirect, session, jsonify
 import json
 # import other dependancies
-from wtforms import Form, BooleanField, TextField, PasswordField, validators
 from passlib.hash import sha256_crypt
 from MySQLdb import escape_string as sanitize
 from flask.ext.cors import CORS
@@ -24,7 +23,7 @@ from db_connect2 import connection
 
 app = Flask(__name__)
 CORS(app, resorces={r'/d/*': {"origins": '*'}})
-app.secret_key = 'aqwsedrftgyhujikolp1654as'
+app.secret_key = 'aqwsedrftgyhujikolp1654asREKUVERIUF7EIRI7EIV8RVYIEVRY'
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -43,9 +42,9 @@ def allowed_file(filename):
 # --------------------------------------------------
 
 
-@app.route('/search/<search>/', methods = ['GET', 'POST'])
-def search(search):
-    
+@app.route('/search/', methods = ['GET', 'POST'])
+def search():
+    search = request.args.get('search')
     try:
         title = "Search"
         query = "%" + search + "%"
@@ -67,9 +66,9 @@ def search(search):
         conn.close()
         
         return jsonify({ "tracks": songResults, "albums": albumResults, "artists": artistResults })
-        #return render_template("pages/search.html", title = title, search = search, songs = songs, albums = albums, artists = artists)
+    
     except Exception as e:
-        #flash(e)
+        
         return str(e)
 
 # --------------------------------------------------
@@ -88,7 +87,6 @@ def userAuth(attempted_username, attempted_password):
         conn.commit()
         c.close()
         conn.close()
-        #gc.collect()
         
         if int(res) > 0:
             db_password = user['password']
@@ -108,7 +106,7 @@ def userAuth(attempted_username, attempted_password):
 # LOGIN
 @app.route('/login/', methods = ['POST'])
 def login():
-    #return jsonify({ "userdata": False })
+    
     data = request.get_json(force=True)
     usernameIn = data['username']
     passwordIn = data['password']
@@ -119,15 +117,13 @@ def login():
 
 
 @app.route('/register/', methods = ['PUT'])
-def signup():
-    title = "Sign Up"
+def register():
+    
     data = request.get_json(force=True)
     email = data['email']
     username = data['username']
     password = data['password']
     password2 = data['confirmPassword']
-            
-    #return jsonify({ "userdata": email })
     
     try:
         password = sha256_crypt.encrypt(str(password))
@@ -149,16 +145,14 @@ def signup():
         conn.commit()
         c.close()
         conn.close()
-        #gc.collect()
 
         return jsonify({ "userdata": True, "message": "You are now registered!" })
                 
     except Exception as e:
-        flash(e)
         return(str(e))
 
 # --------------------------------------------------
-
+'''
 @app.route('/settings/', methods = ['GET', 'POST'])
 def settings():
     
@@ -186,13 +180,13 @@ def settings():
             if username != session['username']:
                 db_username = c.execute("SELECT username FROM users WHERE username = (%s) AND user_id != (%s)", [sanitize(username), session['user_id']])
                 if int(db_username) > 0:
-                    flash("Username taken.")
+                    
                     #return render_template('pages/settings.html', title = title)
                 else:
                     c.execute("UPDATE users SET username = (%s) WHERE user_id = (%s)", [sanitize(username), session['user_id']])
                     #conn.commit()
                     session['username'] = username
-                    flash("Username successfully changed!")
+                    
             
             # ------------------------------
             #   New Email Address
@@ -201,12 +195,12 @@ def settings():
                 # Check if email is already used.
                 db_email = c.execute("SELECT email FROM users WHERE email = (%s) AND user_id != (%s)", [sanitize(email), session['user_id']])
                 if int(db_email) > 0:
-                    flash("An account already exists with that email.")
+                    
                     #return render_template('pages/settings.html', title = title)
                 else:
                     c.execute("UPDATE users SET email = (%s) WHERE user_id = (%s)", [sanitize(email), session['user_id']])
                     session['user_email'] = email
-                    flash("Email successfully changed!")
+                    
             
             # ------------------------------
             #   New Password
@@ -214,15 +208,15 @@ def settings():
             if len(password) > 0:
                  # confirm password
                 if password != password2:
-                    flash("Passwords do not match.")
+                    
                     #return render_template('pages/signup.html', title = title)
                 elif len(password) < 8:
-                    flash("Password not long enough.")
+                    
                     #return render_template('pages/signup.html', title = title)
                 else:
                     password = sha256_crypt.encrypt(str(password))
                     c.execute("UPDATE users SET password = (%s) WHERE user_id = (%s)", [sanitize(password), session['user_id']])
-                    flash("Password successfully changed!")
+                    
             
             # ------------------------------
             
@@ -234,10 +228,10 @@ def settings():
 
         return render_template('pages/settings.html', title = title)
     except Exception as e:
-        flash(e)
+        
         return(str(e))
 # --------------------------------------------------
-
+'''
 # --------------------------------------------------
 #   EDIT CONTENT PAGES
 # --------------------------------------------------
@@ -313,306 +307,153 @@ def addSong(artist_id, album_id):
 # --------------------------------------------------
 
 # EDIT ALBUM
-@app.route('/edit-album/', methods = ['GET', 'POST'])
-def editAlbum():
-    try:
-        title = "Edit Album"
-        if request.method == "POST":
-            
-            album = {}
-
-            album['id'] = request.args.get('album')
-            album['artist'] = request.args.get('artist')
-            album['title'] = request.form['title']
-            #album['artwork'] = request.form['artwork']
-            album['genre'] = request.form['genre']
-            album['year'] = request.form['year']
-            title = album['title']
-            
-            c, conn = connection()
-            
-            file = request.files['artwork']
-            if file and allowed_file(file.filename):
-                image = secure_filename("album_img" + str(album['id']) + "." + file.filename.rsplit('.', 1)[1])
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], image))
-                c.execute("UPDATE albums SET artwork = (%s) WHERE album_id = (%s)", [sanitize(image), sanitize(album['id'])])
-            
-            c.execute("UPDATE albums SET title = (%s), genre = (%s), year_released = (%s) WHERE album_id = (%s)", [sanitize(album['title']), sanitize(album['genre']), sanitize(album['year']), sanitize(album['id'])])
-            # Close Connection
-            conn.commit()
-            c.close()
-            conn.close()
-            #gc.collect()
-            flash("Updated!")
-            return redirect('/artist/?artist=' + str(album['artist']) + "#album" + str(album['id']))
-        elif request.method == "GET":
-            album_id = request.args.get('album')
-            
-            # Establish connection
-            c, conn = connection()
-            
-            result = c.execute("SELECT a.album_id, a.title, a.genre, a.year_released, a.artwork, ar.artist_id, ar.name FROM albums a JOIN artists ar ON a.artist_id=ar.artist_id WHERE a.album_id=(%s)", [sanitize(album_id)])
-            data = c.fetchone()
-            # Close Connection
-            conn.commit()
-            c.close()
-            conn.close()
-            #gc.collect()
-            
-            album = {}
-
-            album['id'] = data[0]
-            album['title'] = data[1]
-            album['artwork'] = data[4]
-            album['genre'] = data[2]
-            album['year'] = data[3]
-            
-            artist = {}
-            artist['id'] = data[5]
-            artist['name'] = data[6]
-            
-            title = album['title']
-           
-            # ------------------------------
-            
-            return render_template('pages/edit-album.html', title = title, album=album, artist = artist)
-        else:
-            return render_template('err/404.html', title = title)
+@app.route('/<int:artist_id>/<int:album_id>/', methods = ['POST'])
+def editAlbum(artist_id, album_id):
+    
+    data = request.get_json(force=True)
+    
+    if userAuth(data['username'], data['password']) == False:
+        return jsonify({'error': True, 'message': 'You are not logged in!'} )
+    print 1
+    try:   
+        album = {}
+        print 2
+        album['id'] = str(album_id)
+        album['artist'] = str(artist_id)
+        album['title'] = data['title']
+        #album['artwork'] = request.form['artwork']
+        album['genre'] = data['genre']
+        album['year'] = str(data['year'])
+        print 3
+        c, conn = connection()
+        '''
+        file = request.files['artwork']
+        if file and allowed_file(file.filename):
+            image = secure_filename("album_img" + str(album['id']) + "." + file.filename.rsplit('.', 1)[1])
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], image))
+            c.execute("UPDATE albums SET artwork = (%s) WHERE album_id = (%s)", [sanitize(image), sanitize(album['id'])])
+        '''
+        print 4
+        c.execute("UPDATE albums SET title = (%s), genre = (%s), year_released = (%s) WHERE album_id = (%s)", [sanitize(album['title']), sanitize(album['genre']), sanitize(album['year']), sanitize(album['id'])])
+        # Close Connection
+        conn.commit()
+        c.close()
+        conn.close()
+        print 5
+        return jsonify({"error": False, "message": "Album Updated!"})
+        
     except Exception as e:
-        flash(e)
+        
         return(str(e))
     
 # --------------------------------------------------
 
 # EDIT ARTIST
-@app.route('/edit-artist/', methods = ['GET', 'POST'])
-def editArtist():
-    try:
-        if request.method == "POST":
-            flash("POST")
-            artist = {}
-            artist['id'] = request.args.get('artist')
-            artist['name'] = request.form['name']
-            artist['bio'] = request.form['bio'].encode('utf-8')
-            artist['genre'] = request.form['genre']
-            artist['country'] = request.form['country']
-            artist['year'] = request.form['year']
-            title = artist['name']
-            c, conn = connection()
-            c.execute("UPDATE artists SET name = (%s), biography = (%s), genre = (%s), country = (%s), year_formed = (%s) WHERE artist_id = (%s)", [sanitize(artist['name']), artist['bio'], sanitize(artist['genre']), sanitize(artist['country']),sanitize(artist['year']), sanitize(artist['id'])])
-            # Close Connection
-            conn.commit()
-            c.close()
-            conn.close()
-            #gc.collect()
-            flash("Updated!")
-            return redirect('/artist/?artist=' + str(artist['id']))
-        elif request.method == "GET":
-            artist_id = request.args.get('artist')
-            
-            # Establish connection
-            c, conn = connection()
-            
-            
-            result = c.execute("SELECT * FROM artists WHERE artist_id = (%s)", [sanitize(artist_id)])
-            data = c.fetchone()
-            
-            artist = {}
-            artist['id'] = data[0]
-            artist['name'] = data[2]
-            artist['bio'] = data[1].decode('utf-8')
-            artist['genre'] = data[3]
-            artist['country'] = data[4]
-            artist['year'] = data[5]
-            title = artist['name']
-            result = c.execute("SELECT member_id, name, role FROM members WHERE artist_id = (%s)", [sanitize(artist_id)])
-            data = c.fetchall()
-            members = []
-            for member in data:
-                members.append({'id': member[0], 'name': member[1], 'role': member[2]})
-            
-            # ------------------------------
-           
-            # Close Connection
-            conn.commit()
-            c.close()
-            conn.close()
-            #gc.collect()
-            
-            #title = "Edit Artist"
-            
-            return render_template('pages/edit-artist.html', title = title, artist = artist, members = members)
-        else:
-            return render_template('err/404.html', title = title)
+@app.route('/<int:artist_id>/', methods = ['POST'])
+def editArtist(artist_id):
+    
+    data = request.get_json(force=True)
+    
+    if userAuth(data['username'], data['password']) == False:
+        return jsonify({'error': True, 'message': 'You are not logged in!'} )
+    
+    try: 
+        artist = {}
+        artist['id'] = str(artist_id)
+        artist['name'] = data['name']
+        artist['bio'] = data['bio'].encode('utf-8')
+        artist['genre'] = data['genre']
+        artist['country'] = data['country']
+        artist['year'] = str(data['year'])
+        
+        c, conn = connection()
+        c.execute("UPDATE artists SET name = (%s), biography = (%s), genre = (%s), country = (%s), year_formed = (%s) WHERE artist_id = (%s)", [sanitize(artist['name']), artist['bio'], sanitize(artist['genre']), sanitize(artist['country']),sanitize(artist['year']), sanitize(artist['id'])])
+        # Close Connection
+        conn.commit()
+        c.close()
+        conn.close()
+        
+        return jsonify({'error': False, 'message': 'Updated artist!'})
+       
     except Exception as e:
-        flash(e)
+        
         return(str(e))
     
 # --------------------------------------------------
 
-
 # --------------------------------------------------
-#   ADD CONTENT PAGES
+#   ADD ARTIST
 # --------------------------------------------------
-
-# ADD SONG
-@app.route('/add-song/', methods = ['GET', 'POST'])
-def addSong2():
+@app.route('/', methods = ['PUT'])
+def add_Artist():
+    
     data = request.get_json(force=True)
     
     if userAuth(data['username'], data['password']) == False:
-        print "sup"
         return jsonify({'error': True, 'message': 'You are not logged in!'} )
-       
-    try:
-        song = {}
-        song['album_id'] = str(data['album_id'])
-        song['track_number'] = str(data['track_number'])
-        song['title'] = data['title'].encode('utf-8')
-        song['lyrics'] = data['lyrics'].encode('utf-8')
-        song['media_link'] = data['media_link'].encode('utf-8')
-        
+    print 1
+    try: 
+        artist = {}
+        artist['name'] = data['name']
+        artist['bio'] = data['bio'].encode('utf-8')
+        artist['genre'] = data['genre']
+        artist['country'] = data['country']
+        artist['year'] = str(data['year'])
+        print 2
         c, conn = connection()
-        c.execute("INSERT INTO tracks (album_id, track_no, title, lyrics, media_link) VALUES (%s, %s, %s, %s, %s);", [sanitize(song['album_id']), sanitize(song['track_number']), sanitize(song['title']), song['lyrics'], sanitize(song['media_link'])])
+        c.execute("INSERT INTO artists(name, biography, genre, country, year_formed) VALUES ((%s), (%s), (%s), (%s), (%s))", [sanitize(artist['name']), artist['bio'], sanitize(artist['genre']), sanitize(artist['country']),sanitize(artist['year'])])
         c.execute("SELECT LAST_INSERT_ID();")
         data = c.fetchone()
         # Close Connection
         conn.commit()
         c.close()
         conn.close()
-
-        return jsonify({"error": False, "message": "Song added!"})
-        
-        return jsonify({"error": True, "message": "Something went wrong...", "track_id": data })
+        print 3
+        return jsonify({'error': False, 'message': 'Updated artist!', "artist_id": data['LAST_INSERT_ID()']})
+       
     except Exception as e:
+        
         return(str(e))
-    
+
+# --------------------------------------------------
+#   ADD CONTENT PAGES
 # --------------------------------------------------
 
-# EDIT ALBUM
-@app.route('/add-album/', methods = ['GET', 'POST'])
-def addAlbum():
-    try:
-        title = "Add Album"
-        
+# ADD ALBUM
+@app.route('/<int:artist_id>/', methods = ['PUT'])
+def addAlbum(artist_id):
+    
+    data = request.get_json(force=True)
+    
+    if userAuth(data['username'], data['password']) == False:
+        return jsonify({'error': True, 'message': 'You are not logged in!'} )
+    print 1
+    try:   
         album = {}
+        print 2
+        album['artist_id'] = str(artist_id)
+        album['title'] = data['title']
+        album['genre'] = data['genre']
+        album['year'] = str(data['year'])
+        print 3
+            
+        c, conn = connection()
+
+        c.execute("INSERT INTO albums ( artist_id, title, genre, year_released) VALUES(%s, %s, %s, %s)", [sanitize(album['artist_id']), sanitize(album['title']), sanitize(album['genre']), sanitize(album['year'])])
+        # Close Connection
+        conn.commit()
+        c.close()
+        conn.close()
+        print 4
+        return jsonify({'error': False, "message": "Album added!"})
+    except Exception as e:
         
-        if request.method == "POST":
-            
-            
-
-            album['id'] = request.args.get('artist')
-            album['artist_id'] = request.args.get('artist')
-            album['title'] = request.form['title']
-            #album['artwork'] = request.form['artwork']
-            album['genre'] = request.form['genre']
-            album['year'] = request.form['year']
-            
-            file = request.files['artwork']
-            
-            title = album['title']
-            
-            c, conn = connection()
-            
-            
-            
-            if file and allowed_file(file.filename):
-                image = secure_filename("album_img" + str(album['id']) + "." + file.filename.rsplit('.', 1)[1])
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], image))
-                c.execute("INSERT INTO albums ( artist_id, title, genre, year_released, artwork) VALUES(%s, %s, %s, %s, %s)", [sanitize(album['artist_id']), sanitize(album['title']), sanitize(album['genre']), sanitize(album['year']), sanitize(image)])
-            else:
-                c.execute("INSERT INTO albums ( artist_id, title, genre, year_released) VALUES(%s, %s, %s, %s)", [sanitize(album['artist_id']), sanitize(album['title']), sanitize(album['genre']), sanitize(album['year'])])
-            # Close Connection
-            conn.commit()
-            c.close()
-            conn.close()
-            #gc.collect()
-            flash("Updated!")
-            return redirect('/artist/?artist=' + str(album['artist_id']) + "#album" + str(album['id']))
-        elif request.method == "GET":
-            title = "Add Album"
-            album = {}
-            artist = {}
-           
-            # ------------------------------
-            
-            return render_template('pages/edit-album.html', title = title, album = album, artist = artist)
-        else:
-            return render_template('err/404.html', title = title)
-    except Exception as e:
-        flash(e)
         return(str(e))
     
 # --------------------------------------------------
 
-# EDIT ARTIST
-@app.route('/add-artist/', methods = ['GET', 'POST'])
-def addArtist():
-    try:
-        if request.method == "POST":
-            artist = {}
-            artist['id'] = request.args.get('artist')
-            artist['name'] = request.form['name']
-            artist['bio'] = request.form['bio'].encode('utf-8')
-            artist['genre'] = request.form['genre']
-            artist['country'] = request.form['country']
-            artist['year'] = request.form['year']
-            title = artist['name']
-            c, conn = connection()
-            c.execute("UPDATE artists SET name = (%s), biography = (%s), genre = (%s), country = (%s), year_formed = (%s) WHERE artist_id = (%s)", [sanitize(artist['name']), artist['bio'], sanitize(artist['genre']), sanitize(artist['country']),sanitize(artist['year']), sanitize(artist['id'])])
-            # Close Connection
-            conn.commit()
-            c.close()
-            conn.close()
-            #gc.collect()
-            flash("Updated!")
-            return redirect('/artist/?artist=' + str(artist['id']))
-        elif request.method == "GET":
-            artist_id = request.args.get('artist')
-            
-            # Establish connection
-            c, conn = connection()
-            
-            
-            result = c.execute("SELECT * FROM artists WHERE artist_id = (%s)", [sanitize(artist_id)])
-            data = c.fetchone()
-            
-            artist = {}
-            artist['id'] = data[0]
-            artist['name'] = data[2]
-            artist['bio'] = data[1].decode('utf-8')
-            artist['genre'] = data[3]
-            artist['country'] = data[4]
-            artist['year'] = data[5]
-            title = artist['name']
-            result = c.execute("SELECT member_id, name, role FROM members WHERE artist_id = (%s)", [sanitize(artist_id)])
-            data = c.fetchall()
-            members = []
-            for member in data:
-                members.append({'id': member[0], 'name': member[1], 'role': member[2]})
-            
-            # ------------------------------
-           
-            # Close Connection
-            conn.commit()
-            c.close()
-            conn.close()
-            #gc.collect()
-            
-            #title = "Edit Artist"
-            
-            return render_template('pages/edit-artist.html', title = title, artist = artist, members = members)
-        else:
-            return render_template('err/404.html', title = title)
-    except Exception as e:
-        flash(e)
-        return(str(e))
-    
 # --------------------------------------------------
-
-
-# --------------------------------------------------
-#   VIEW CONTENT PAGES
+#   EXTRA ENDPOINTS
 # --------------------------------------------------
 
 # All Tracks
@@ -637,7 +478,7 @@ def all_tracks():
         return jsonify({'tracks': data})
 
     except:
-        flash(e)
+        
         return(str(e))
     
 # --------------------------------------------------
@@ -675,7 +516,7 @@ def song(artist_id, album_id, track_id):
         return jsonify({ 'track': track })
         
     except Exception as e:
-        flash(e)
+        
         return(str(e))
     
 # --------------------------------------------------
@@ -685,8 +526,6 @@ def song(artist_id, album_id, track_id):
 def song2(track_id):
     
     try:
-         
-        #track_id = request.args.get('song')
         
         # Establish connection
         c, conn = connection()
@@ -698,8 +537,6 @@ def song2(track_id):
         #track = c.fetchone()
         id = track['track_id']
         track['track_id'] = int(id)
-        
-        
         
         result = c.execute("SELECT t.track_id, t.track_no, t.title, a.album_id, a.title, a.genre, a.year_released, a.artwork, ar.artist_id, ar.name FROM tracks T JOIN albums a ON t.album_id=a.album_id JOIN artists ar ON a.artist_id=ar.artist_id WHERE t.album_id=(%s) ORDER BY t.track_no", [track['album_id']])
         album = c.fetchall()
@@ -714,7 +551,7 @@ def song2(track_id):
         return jsonify({ 'track': track })
         
     except Exception as e:
-        flash(e)
+        
         return(str(e))
     
 # --------------------------------------------------
@@ -741,7 +578,7 @@ def all_albums():
         return jsonify({'albums': data})
 
     except:
-        flash(e)
+        
         return(str(e))
     
 # --------------------------------------------------
@@ -767,38 +604,9 @@ def all_artists():
         return jsonify({'artists': data})
 
     except:
-        flash(e)
+        
         return(str(e))
     
-# --------------------------------------------------
-
-# Add an Artist
-@app.route('/artists/', methods = ['POST'])
-def add_artist():
-    try:
-        
-        #DEVTIP change [] to ()
-        artist = {}
-        artist['id'] = request.json.get('artist')
-        artist['name'] = request.json.get['name']
-        artist['bio'] = request.json.get['bio'].encode('utf-8')
-        artist['genre'] = request.json.get['genre']
-        artist['country'] = request.json.get['country']
-        artist['year'] = request.json.get['year']
-        title = artist['name']
-        c, conn = connection()
-        c.execute("INSERT INTO artists (name, biography, genre, country, year_formed) VALUES(%s, %s, %s, %s, %s);", [sanitize(artist['name']), artist['bio'], sanitize(artist['genre']), sanitize(artist['country']),sanitize(artist['year']), sanitize(artist['id'])])
-        # Close Connection
-        conn.commit()
-        c.close()
-        conn.close()
-        
-        return make_response(jsonify( { 'error': 'success' } ), 201)
-
-    
-    except Exception as e:
-        flash(e)
-        return(str(e))
 # --------------------------------------------------
 
 # Get single Artist
@@ -874,7 +682,7 @@ def addAlbumToArtist(artist_id):
             c.close()
             conn.close()
             #gc.collect()
-            flash("Updated!")
+            
             return redirect('/artist/?artist=' + str(album['artist_id']) + "#album" + str(album['id']))
         elif request.method == "GET":
             title = "Add Album"
@@ -887,7 +695,7 @@ def addAlbumToArtist(artist_id):
         else:
             return render_template('err/404.html', title = title)
     except Exception as e:
-        flash(e)
+        
         return(str(e))
     
 # --------------------------------------------------
@@ -896,18 +704,9 @@ def addAlbumToArtist(artist_id):
 @app.route('/album/<int:album_id>/', methods = ['GET'])
 def album(album_id):
     try:
-         
-        #track_id = request.args.get('song')
         
         # Establish connection
         c, conn = connection()
-        #song = {}
-       
-        
-        #track = c.fetchone()
-        
-        
-        
         
         result = c.execute("SELECT a.album_id, a.title, a.genre, a.year_released, a.artwork, ar.artist_id, ar.name FROM albums a JOIN artists ar ON a.artist_id=ar.artist_id WHERE a.album_id=(%s)", [album_id])
         album = c.fetchone()
@@ -923,12 +722,10 @@ def album(album_id):
         conn.commit()
         c.close()
         conn.close()
-        #gc.collect()
-        
         return jsonify({ 'album': album })
         
     except Exception as e:
-        flash(e)
+        
         return(str(e))
     
 # --------------------------------------------------
@@ -938,16 +735,16 @@ def album(album_id):
 # --------------------------------------------------
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template("err/404.html")
+    return jsonify({'message' : '404: Page Not Found.'})
 
 @app.errorhandler(405)
 def page_not_found(e):
-    return render_template("err/405.html")
+    return jsonify({'message' : '405: You don\'t have permissions.'})
 
 @app.errorhandler(500)
 def page_not_found(e):
-    flash(str(e))
-    return render_template("err/500.html")
+    
+    return jsonify({'message' : '500: Internal Server Error'})
 
 if __name__=="__main__":
     app.run()

@@ -26,13 +26,13 @@ $(document).ready(function(){
         
         var queryParameters = getUrlVars();
         var query = queryParameters.search;
-        var url = "http://localhost:5000/search/" + query;
+        var url = "http://localhost:5000/search/?search=" + query;
 
         var self = this;
         
         self.loggedIn = ko.observable(userdata['logged_in']);
         
-        self.query = ko.observable(query);
+        self.query = ko.observable(query.replace(/\+/g, ' '));
         self.songs = ko.observableArray();
         self.albums = ko.observableArray();
         self.artists = ko.observableArray();

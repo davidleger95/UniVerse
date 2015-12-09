@@ -744,7 +744,7 @@ audio {
         background-position: 0px 0px;
         background-size: contain;
         background-repeat: no-repeat;
-        background-image: url(/static/img/icons/treble.svg); }
+        background-image: url(/img/icons/treble.svg); }
     .navbar-wrapper .navbar ul li.navbar-search {
       -webkit-box-flex: 1;
       -webkit-flex-grow: 1;

@@ -1,35 +1,26 @@
+$(document).ready(function(){
+        // Here's my data model
+
+         var userdata = { 'logged_in': false };
+
+        if(JSON.parse(localStorage.getItem("userdata"))){
+            userdata = JSON.parse(localStorage.getItem("userdata"));
+
+            $('#username').text(userdata['username']);
+            $('#user-img').attr("src", "http://localhost:5000/static/uploads/" + userdata['image_url']);
+        }
+
 // Here's my data model
 var ViewModel = function() {
     
-    var artist = 1;
     
     var self = this;
-
-    //self.data = ko.observableArray();
-    self.name = ko.observable();
-    self.bio = ko.observable();
-    self.genre = ko.observable();
-    self.year = ko.observable();
-    self.members = ko.observableArray();
     
-    $.ajax({
-        type: "GET",
-        url: "http://localhost:5000/2",
-        dataType: 'json',
-        success: function(result){
-            console.log(result.artist.biography);
-            self.name(result.artist.name);
-            self.bio(result.artist.biography);
-            self.genre(result.artist.genre);
-            self.year(result.artist.year_formed);
-            self.members(result.artist.members);
-        },
-        error: function(result){
-            console.log(result);
-            alert("Error");
-        }
-    });
+    self.loggedIn = ko.observable(userdata['logged_in']);
+   
  
 };
 
 ko.applyBindings(new ViewModel()); // This makes Knockout get to work
+
+});

@@ -45,7 +45,11 @@ var ViewModel = function() {
             console.log(result.track.title);
             self.curr_title(result.track.title);
             self.lyrics(nl2br(result.track.lyrics));
-            self.medialink(result.track.medialink);
+            var media = result.track.media_link;
+            if(result.track.media_link){
+                media = result.track.media_link.split("=")[1];
+            }
+            self.medialink(media);
             self.year(result.track.album[0].year_released);
             self.curr_track_id(result.track.track_id);
             self.curr_track_no(result.track.track_no);

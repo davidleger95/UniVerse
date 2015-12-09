@@ -31,10 +31,11 @@
                         </li>
                     </ul>
                     <span data-bind = "if: loggedIn">
-                    <ul class="navbar-right col-sm" data-bind = "if: loggedIn">
+                    <ul class="navbar-right col-sm">
                         <li class="nav-item">
                             <a href="/add-artist">+ Add Artist</a>
                         </li>
+                        <!-- if LOGGED_IN -->
                         <li class="nav-item right">
                             <a href="#">
                                 <span id="username"></span>
@@ -53,8 +54,6 @@
                     </span>
                     <span data-bind = "ifnot: loggedIn">
                     <ul class="navbar-right col-sm" data-bind = "ifnot: loggedIn">
-                        <!-- ENDIF -->
-
                         <li class="nav-item">
                             <a href="/login">Login</a>
                         </li>
@@ -71,54 +70,65 @@
         <div class="view-wrapper" style="margin-top: 60px;">
             
             <div class="container" style="">
-                <div class="row login-register">
-                    <div class="col-md hide-mobile">
-                        <div class="logo">
-                            <img src="/img/uv-logo-lg.png">
-                        </div>
-                    </div>
-                    <span class="divider hide-mobile"></span>
-                    <div class="col-md">
-                        <form id="register-form" class="lr-form" action="" method="post" onsubmit="return false;">
-                            <h1 class="text-center">Register</h1>
+                <div class="row edit-settings-page">
+                    <form id="save-settings" action="" method="post" enctype="multipart/form-data">
+                    <div class="col-lg">
+                        <div class="edit-settings">
+                            <h1>Account Settings</h1>
+                            <h2><span class="sub">Username</span></h2>
                             <input name="username"
                                    id="username"
                                    type="text"
-                                   class="icon-treble"
+                                   class="icon-ellipsis"
                                    placeholder="Username"
-                                   data-bind="value: username"
-                                   >
+                                   data-bind="attr: {value: username}">
+                            <h2><span class="sub">Email</span></h2>
                             <input name="email"
                                    id="email"
                                    type="email"
                                    class="icon-at"
-                                   placeholder="Email Address"
-                                   data-bind="value: email"
-                                   >
-                            
+                                   placeholder="you@example.com"
+                                   data-bind="attr: {value: email}">
+                            <h2><span class="sub">Change Password</span></h2>
                             <input name="password"
-                                   id="password"
+                                   id="signup-password"
                                    type="password"
                                    class="icon-ellipsis"
-                                   placeholder="Password"
-                                   data-bind="value: password">
-                            
-                            <input name="confirm-password"
-                                   id="confirm-password"
+                                   placeholder="Password">
+                            <h2><span class="sub">Repeat New Password</span></h2>
+                            <input name="repeatpassword"
+                                   id="signup-repeat-password"
                                    type="password"
                                    class="icon-ellipsis"
-                                   placeholder="Confirm Password"
-                                   data-bind="value: confirmPassword">
-                            <input name="submit"
-                                   id="submit"
-                                   type="submit"
-                                   class=""
-                                   value="Register">
-                        </form>
+                                   placeholder="Repeat Password">
+                            <p>NOTE: leave password fields blank if you do not want to change your password.</p>
+                            </div>
+                        </div>
+
+                    <div class="col-sm">
+                        <div class="artist-meta">
+                            <div class="album-meta">
+                                <div class="fix-bottom">
+                                    <input name="save-album"
+                                       id="save-album"
+                                       type="submit"
+                                       class=""
+                                       value="Save">
+                                </div>
+                                <h2><span class="sub">Image</span></h2>
+                                <img id="user-image-preview"
+                                     class="artwork">
+                                <input name="image"
+                                       id="user-image"
+                                       type="file"
+                                       class="outline"
+                                       value="Choose Image">
+                            </div>
+                        </div>
                     </div>
+                    </form>
                 </div>
             </div>
-            
             <div class="container">
                 <div class="row">
                     <footer class="">
@@ -146,6 +156,6 @@
         <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-3.3.0.js"></script>
         <script src="../js/main.js"></script>
         <script src="main.js"></script>
-        <script src="../js/ui.js"></script>
+        <script src="/js/ui.js"></script>
     </body>
 </html>

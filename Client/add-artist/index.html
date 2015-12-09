@@ -7,7 +7,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
         <link xmlns="http://www.w3.org/1999/xhtml" rel="shortcut icon" type="image/png" href="/assets/img/badge-sm.png"/>
-        <title data-bind='text: title'>UniVerse | Add Song</title>
+        <title >UniVerse | Add Artist</title>
         <link rel= "stylesheet" type= "text/css" href= "/css/main.css">
     </head>
     <body>
@@ -35,6 +35,7 @@
                 <li class="nav-item">
                     <a href="/add-artist">+ Add Artist</a>
                 </li>
+
                 <!-- if LOGGED_IN -->
                 <li class="nav-item right">
                     <a href="#">
@@ -50,6 +51,7 @@
                         </li>
                     </ul>
                 </li>
+                
             </ul>
             </span>
             <span data-bind = "ifnot: loggedIn">
@@ -71,36 +73,27 @@
         
         <div class="view-wrapper" style="margin-top: 60px;">
             <div class="container" style="">
-                <div class="row edit-album-page">
-                    <form id="save-album" action="" method="post" enctype="multipart/form-data" onsubmit="return false;">
+                <div class="row edit-artist-page">
+                    <form id="save-artist" action="" method="post" onsubmit="return false;">
                     <div class="col-lg">
-                        <div class="edit-album">
-                            <h1>Edit Album</h1>
-                            <h2><span class="sub">Title</span></h2>
-                            <input name="title"
-                                   id="album-title"
+                        <div class="edit-artist">
+                            <h1>Add Artist</h1>
+                            <h2><span class="sub">Name</span></h2>
+                            <input name="name"
+                                   id="artist-name"
                                    type="text"
                                    class="icon-ellipsis"
-                                   placeholder="Album Title"
-                                   data-bind="attr: {value: title}">
-                            <h2><span class="sub">Year Released</span></h2>
-                            <input name="year"
-                                   id="album-year"
-                                   type="number"
-                                   class="icon-ellipsis"
-                                   placeholder="When Did This Album Come Out?"
-                                   data-bind="attr: {value: year}">
-                            <h2><span class="sub">Genre</span></h2>
-                            <input name="genre"
-                                   id="album-genre"
-                                   type="text"
-                                   class="icon-eighth"
-                                   placeholder="Album Genre"
-                                   data-bind="attr: {value: genre}">
-                            <a data-bind="attr: {href: '/add-song/?artist=' + artist_id() + '&album=' + album_id() }"
-                               name="add-song"
-                               id="add-song"
-                               class="btn outline">Add A Song</a>
+                                   placeholder="Artist"
+                                   >
+                            <h2><span class="sub">Biography</span></h2>
+                            <textarea name="bio"
+                                      id="artist-bio"
+                                      type="text"
+                                      class=""
+                                      placeholder="About this Artist"
+                                      
+                                      ></textarea>
+                           
                             </div>
                         </div>
 
@@ -108,24 +101,56 @@
                         <div class="artist-meta">
                             <div class="album-meta">
                                 <div class="fix-bottom">
-                                    <input name="save-album"
-                                           id="save-album"
+                                    <input name="save-artist"
+                                           id="save-artist"
                                            type="submit"
                                            class=""
                                            value="Save">
                                 </div>
-                                <h2 class=""><span class="sub">Artist</span></h2>
-                                <p data-bind="text: name"></p>
+                                <!--h2><span class="sub">Members</span></h2>
+                                <ul>
+                                    {% for member in members %}
+                                    <li>
+                                        <input name="artist-member-{{ member['id'] }}"
+                                               id="artist-member-{{ member['id'] }}"
+                                               type="text"
+                                               class="icon-{{ loop.index }}"
+                                               placeholder="Member"
+                                               value="{{ member['name'] }}">
 
-                                <h2><span class="sub">Artwork</span></h2>
-                                <img id="album-artwork-preview"
-                                     class="artwork" 
-                                     data-bind="attr: {src: 'http://localhost:5000/static/uploads/' + artwork() }">
-                                <input name="artwork"
-                                       id="album-artwork"
-                                       type="file"
-                                       class="outline"
-                                       value="Choose Art">
+                                    </li>
+                                    {% endfor %}
+                                    <li>
+                                        <input name="new-member"
+                                               id="new-member"
+                                               type="text"
+                                               class="icon-plus"
+                                               placeholder="Add New Member...">
+                                    </li>
+                                </ul-->
+
+
+                                <h2><span class="sub">Genre</span></h2>
+                                <input name="genre"
+                                       id="artist-genre"
+                                       type="text"
+                                       class="icon-eighth"
+                                       placeholder="Genre"
+                                       >
+                                <h2><span class="sub">Country</span></h2>
+                                <input name="country"
+                                       id="artist-country"
+                                       type="text"
+                                       class="icon-ellipsis"
+                                       placeholder="Where is This Artist From?"
+                                       >
+                                <h2><span class="sub">Year Formed</span></h2>
+                                <input name="year"
+                                       id="artist-year"
+                                       type="number"
+                                       class="icon-ellipsis"
+                                       placeholder="2015"
+                                       >
                             </div>
                         </div>
                     </div>
